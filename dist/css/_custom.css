@@ -1,0 +1,63 @@
+.navbar-vertical .navbar-nav .nav-link {
+  padding: 0.65rem 1.5rem;
+  font-size: 0.9rem;
+}
+
+.navbar-vertical .navbar-nav .nav-link i, .navbar-vertical .navbar-nav .nav-link svg {
+  min-width: 2.1rem;
+  font-size: 20px;
+}
+
+.navbar-vertical .navbar-nav .nav-link {
+  padding: 0.7rem 1.9rem 0.75em 2.4rem;
+}
+
+.container-fluid {
+  padding-right: var(--x-gutter-x, 3rem);
+  padding-left: var(--x-gutter-x, 3rem);
+}
+
+.dropdown-item {
+  padding: 0.5rem 1.5rem;
+}
+
+.dropdown-header {
+  padding: 0.5rem 1.5rem;
+}
+
+.dropdown-item:hover, .dropdown-item:focus {
+  background-color: var(--x-indigo-500);
+  color: white;
+}
+
+.navbar-vertical.navbar-light .navbar-nav > .nav-item > .nav-link.active {
+  background-color: rgba(144, 18, 253, 0.04);
+  color: var(--x-indigo-500);
+  border-left: 4px solid var(--x-indigo-500);
+  border-left-style: dashed;
+}
+
+.navbar-vertical.navbar-light .navbar-nav > .nav-item > .nav-link:hover {
+  background-color: rgba(144, 18, 253, 0.04);
+  color: var(--x-indigo-500);
+}
+
+.navbar-vertical.navbar-light .navbar-nav > .nav-item > .nav-link.active > i.bi,
+.navbar-vertical.navbar-light .navbar-nav > .nav-item > .nav-link:hover > i.bi {
+  color: var(--x-indigo-500);
+}
+
+@media (min-width: 992px) {
+  #sidebar {
+    max-width: 250px;
+  }
+
+  .navbar-brand {
+    text-align: center;
+  }
+
+  .navbar-expand-lg .navbar-brand img {
+    height: 37px;
+  }
+}
+/*# sourceMappingURL=_custom.css.map */
