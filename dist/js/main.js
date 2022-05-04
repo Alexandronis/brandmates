@@ -142,10 +142,10 @@
       this[globalName] = mainExports;
     }
   }
-})({"85r0j":[function(require,module,exports) {
+})({"hq2tp":[function(require,module,exports) {
 "use strict";
 var HMR_HOST = null;
-var HMR_PORT = 1234;
+var HMR_PORT = 50361;
 var HMR_SECURE = false;
 var HMR_ENV_HASH = "62b4c8a1dd9cbcca";
 module.bundle.HMR_BUNDLE_ID = "f1a33f3a193ef3c0";
@@ -555,16 +555,91 @@ document.addEventListener('DOMContentLoaded', ()=>{
     let myDropzone2 = new Dropzone("#dropzone-posts-2", {
         url: '/url2.json'
     });
-    myDropzone1.on("addedfile", (file)=>{
-        console.log(`File added: ${file.name}`);
+    let myDropzone3 = new Dropzone("#dropzone-posts-3", {
+        url: '/url3.json'
     });
-    myDropzone2.on("addedfile", (file)=>{
+    let myDropzone4 = new Dropzone("#dropzone-posts-4", {
+        url: '/url4.json'
+    });
+    let myDropzone5 = new Dropzone("#dropzone-posts-5", {
+        url: '/url5.json'
+    });
+    let myDropzone6 = new Dropzone("#dropzone-posts-6", {
+        url: '/url6.json'
+    });
+    let myDropzoneS1 = new Dropzone("#dropzone-stories-1", {
+        url: '/url1.json'
+    });
+    let myDropzoneS2 = new Dropzone("#dropzone-stories-2", {
+        url: '/url2.json'
+    });
+    myDropzone1.on("addedfile", (file)=>{
         console.log(`File added: ${file.name}`);
     });
     // chart.js
     _chartJs.Chart.register(_chartJs.ArcElement, _chartJs.LineElement, _chartJs.BarElement, _chartJs.PointElement, _chartJs.BarController, _chartJs.BubbleController, _chartJs.DoughnutController, _chartJs.LineController, _chartJs.PieController, _chartJs.PolarAreaController, _chartJs.RadarController, _chartJs.ScatterController, _chartJs.CategoryScale, _chartJs.LinearScale, _chartJs.LogarithmicScale, _chartJs.RadialLinearScale, _chartJs.TimeScale, _chartJs.TimeSeriesScale, _chartJs.Decimation, _chartJs.Filler, _chartJs.Legend, _chartJs.Title, _chartJs.Tooltip);
     const ctx = document.getElementById('dateChart').getContext('2d');
+    const ctxStory = document.getElementById('dateChartStory').getContext('2d');
     const myChart = new _chartJs.Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: [
+                '0',
+                '3',
+                '6',
+                '9',
+                '12',
+                '15',
+                '18',
+                '21'
+            ],
+            datasets: [
+                {
+                    label: 'Best hours to post',
+                    data: [
+                        0,
+                        3,
+                        7,
+                        10,
+                        10,
+                        7,
+                        3,
+                        0
+                    ],
+                    backgroundColor: [
+                        '#71A3F3',
+                        '#71A3F3',
+                        '#71A3F3',
+                        '#71A3F3',
+                        '#E3954A',
+                        '#71A3F3',
+                        '#71A3F3',
+                        '#71A3F3', 
+                    ]
+                }
+            ]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    grid: {
+                        display: false,
+                        drawBorder: false
+                    },
+                    ticks: {
+                        display: false
+                    }
+                },
+                x: {
+                    grid: {
+                        display: false
+                    }
+                }
+            }
+        }
+    });
+    const myChartStory = new _chartJs.Chart(ctxStory, {
         type: 'bar',
         data: {
             labels: [
@@ -657,11 +732,22 @@ document.addEventListener('DOMContentLoaded', ()=>{
         if (isCustomRadio) $('#customDateRadio').removeClass('d-none');
         else $('#customDateRadio').addClass('d-none');
     });
+    var checkedRadioStory = $('input[name = "flexRadioDefaultStory"]');
+    checkedRadioStory.click(function() {
+        var isCustomRadio = $(this).attr("id") === 'flexRadioDefaultStory3';
+        if (isCustomRadio) $('#customDateRadioStory').removeClass('d-none');
+        else $('#customDateRadioStory').addClass('d-none');
+    });
     // Date picker
     $('#datepicker').datepicker({
         format: 'dd-mm-yyyy',
         startDate: '+1d',
         altField: "#datepicker-input"
+    });
+    $('#datepickerStory').datepicker({
+        format: 'dd-mm-yyyy',
+        startDate: '+1d',
+        altField: "#datepicker-input-story"
     });
     // Line chart
     const lineChartEl = document.querySelector("#chart-line");
@@ -60349,6 +60435,6 @@ function styleChanged(style, prevStyle) {
     /******/ }();
 });
 
-},{}]},["85r0j","iGeph"], "iGeph", "parcelRequire15ff")
+},{}]},["hq2tp","iGeph"], "iGeph", "parcelRequire15ff")
 
 //# sourceMappingURL=main.js.map

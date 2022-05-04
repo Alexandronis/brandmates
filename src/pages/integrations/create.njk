@@ -274,6 +274,41 @@ permalink: 'pages/create.html'
     .image-dropzone .image-dropzone-small .small-dropzone:not(:last-child) {
         margin-right: 7px;
     }
+    .image-dropzone .story-dropzone {
+        background: #F2F9FD;
+        cursor: pointer;
+        display: inline-block;
+        height: 410px;
+        position: relative;
+        vertical-align: top;
+        width: 230px;
+    }
+    .image-dropzone .story-dropzone .plus-icon {
+        left: calc(50% - 19px);
+        position: absolute;
+        top: calc(50% - 19px);
+        width: 38px;
+    }
+    .image-dropzone .story-dropzone .dz-preview div {
+        display: none;
+    }
+    .image-dropzone .story-dropzone .dz-preview .dz-image {
+        display: block;
+    }
+    .image-dropzone .story-dropzone .dz-preview .dz-image img {
+        height: 100%;
+        width: 100%;
+    }
+    .image-dropzone.image-dropzone-story {
+        overflow: scroll;
+        width: 400px;
+    }
+    .image-dropzone .image-dropzone-story-inner {
+        width: 470px;
+    }
+    .image-dropzone .image-dropzone-story-inner .story-dropzone:not(:last-child) {
+        margin-right: 5px;
+    }
     .comment-block {
         padding-right: 42px;
         width: 100%;
@@ -435,7 +470,113 @@ permalink: 'pages/create.html'
                         <button class="btn btn-primary create-button">Create Post</button>
                     </div>
                 </div>
-                <div class="tab-pane fade" id="stories-content" role="tabpanel" aria-labelledby="stories-tab">Stories</div>
+                <div class="tab-pane fade" id="stories-content" role="tabpanel" aria-labelledby="stories-tab">
+                    <div class="strategy-select">
+                        <div class="dropdown">
+                            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton12" data-bs-toggle="dropdown" aria-expanded="false">
+                                Strategy: Choose one
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton12">
+                                <li><a class="dropdown-item" href="#">Behind The Scenes</a></li>
+                                <li><a class="dropdown-item" href="#">Education</a></li>
+                                <li><a class="dropdown-item" href="#">Product</a></li>
+                                <li><a class="dropdown-item" href="#">Testimonial</a></li>
+                                <li><a class="dropdown-item" href="#">Community</a></li>
+                                <li><a class="dropdown-item" href="#">Inspiration</a></li>
+                                <li><a class="dropdown-item" href="#">Lifestyle</a></li>
+                                <li><a class="dropdown-item" href="#">Entertainment</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="main-row">
+                        <div class="image-dropzone image-dropzone-story">
+                            <div class="image-dropzone-story-inner">
+                                <div id="dropzone-stories-1" class="story-dropzone">
+                                    <img alt="Plus" src="{{ '/svg/create/plus.svg' }}" class="plus-icon" />
+                                </div>
+                                <div id="dropzone-stories-2" class="story-dropzone second"></div>
+                            </div>
+                        </div>
+                        <div class="comment-block">
+                            <div class="instagram-logo">
+                                <img alt="Instagram" src="{{ '/svg/create/instagram.svg' }}" class="instagram-icon" />
+                            </div>
+                            <div class="comment-area">
+                                <textarea placeholder="Craft the perfect caption here..." class="textarea"></textarea>
+                            </div>
+                            <button type="button" class="btn btn-md comment-button">Add first comment</button>
+                        </div>
+                    </div>
+                    <div class="schedule-block">
+                        <h2 class="schedule-title">Schedule your post</h2>
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-6">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="flexRadioDefaultStory" id="flexRadioDefaultStory1" checked>
+                                        <label class="form-check-label" for="flexRadioDefaultStory1">
+                                            Save as draft
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="flexRadioDefaultStory" id="flexRadioDefaultStory2">
+                                        <label class="form-check-label" for="flexRadioDefaultStory2">
+                                            Send post notification now
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="flexRadioDefaultStory" id="flexRadioDefaultStory3">
+                                        <label class="form-check-label" for="flexRadioDefaultStory3">
+                                            Custom time
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="custom-date d-none" id="customDateRadioStory">
+                                        <button type="button" class="custom-date-label" data-bs-toggle="modal" data-bs-target="#customDateModalStory">
+                                            <i class="bi bi-clock"></i> Publish on <br/>
+                                            <input placeholder="Select your date" type="text" name="checkIn" value="" id="datepicker-input-story" class="form-control" />
+                                            <i class="fas fa-calendar-check icon"></i>
+                                        </button>
+                                        <div class="modal fade" id="customDateModalStory" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-body">
+                                                        <div id="datepickerStory" class="modal-datepicker"></div>
+                                                        <div class="modal-quick-actions">
+                                                            <button type="button" class="btn btn-default">
+                                                              <i class="bi bi-sunrise"></i> Morning
+                                                            </button>
+                                                            <button type="button" class="btn btn-default">
+                                                              <i class="bi bi-sun"></i> Noon
+                                                            </button>
+                                                            <button type="button" class="btn btn-default">
+                                                              <i class="bi bi-sunset"></i> Afternoon
+                                                            </button>
+                                                            <button type="button" class="btn btn-default">
+                                                              <i class="bi bi-moon"></i> Evening
+                                                            </button>
+                                                        </div>
+                                                        <div class="modal-chart">
+                                                            <canvas id="dateChartStory" width="300" height="100"></canvas>
+                                                        </div>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                                        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Pick time</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="create-button-wrapper">
+                        <button class="btn btn-primary create-button">Create Story</button>
+                    </div>
+                </div>
                 <div class="tab-pane fade" id="reels-content" role="tabpanel" aria-labelledby="reels-tab">Reels</div>
             </div>
         </section>
