@@ -1,0 +1,438 @@
+---
+layout: base
+headerButtons: false
+navbar: false
+title: Create
+permalink: 'pages/create.html'
+---
+
+<style type="text/css">
+    .modal-quick-actions {
+      background: transparent;
+      display: flex;
+      margin: 30px 0;
+    }
+    .modal-quick-actions button {
+        flex-grow: 1;
+        flex-basis: 0;
+    }
+    .modal-quick-actions i:before {
+        border-radius: 50%;
+        box-shadow: 0px 1px 2px rgb(50 50 71 / 8%);
+        margin-bottom: 7px;
+        padding: 10px;
+    }
+    .modal-chart {
+        margin-bottom: 30px;
+    }
+    .create-column {
+        flex: 0 0 calc(100% - 560px);
+        margin-right: 560px;
+        position: relative;
+    }
+
+    .add-section {
+        background: #fff;
+        padding: 5px 0 21px 42px;
+    }
+
+    .add-section .nav-tabs {
+        border-bottom:  1px solid transparent;
+    }
+
+    .add-section .tab-content .tab-pane {
+        background: #fff;
+        padding: 21px 0;
+        position: relative;
+    }
+
+    .phone-column {
+        background: transparent url('https://www.plannthat.com/_nuxt/img/iphone.7d167d0.svg') top left no-repeat;
+        background-size: 100% auto;
+        bottom: 0;
+        filter: drop-shadow(0px 14px 40px rgba(28,39,55,0.12));
+        height: calc(100vh - 6rem);
+        padding: 65px 24px 0 24px;
+        position: fixed;
+        right: 60px;
+        top: 6rem;
+        transition: 150ms;
+        width: 500px;
+        z-index: 1;
+    }
+
+    .strategy-select {
+        border-bottom-left-radius: 4px;
+        border-top-left-radius: 4px;
+        color: #fff;
+        display: flex;
+        font-weight: bold;
+        position: absolute;
+        right: 0;
+        top: 21px;
+        width: auto;
+        z-index: 1;
+    }
+    .strategy-select button {
+        border-bottom-right-radius: 0;
+        border-top-right-radius: 0;
+    }
+
+    .schedule-block {
+        padding: 50px 0;
+        position: relative;
+    }
+
+    .schedule-block .modal-footer {
+        justify-content: space-between;
+    }
+
+    .schedule-title {
+        margin-bottom: 20px;
+    }
+
+    .schedule-block .custom-date .custom-date-label {
+        align-items: center;
+        background: transparent;
+        color: #000;
+        display: flex;
+        padding: 8px;
+        text-align: left;
+        width: 100%;
+    }
+
+    .schedule-block .custom-date .custom-date-label input {
+        flex: 0 0 170px;
+        margin-left: 15px;
+    }
+
+    .schedule-block .custom-date .custom-date-label .bi-clock {
+        margin-right: 8px;
+    }
+
+    .form-control {
+        padding:8px;
+    }
+
+    .ui-datepicker {
+        background: #ffffff;
+        border-radius: 15px;
+    }
+    .ui-datepicker-header {
+        background: #9012fe;
+        color: #ffffff;
+        height: 50px;
+        line-height: 50px;
+        margin-bottom: 10px;
+    }
+    .ui-datepicker-prev,
+    .ui-datepicker-next {
+        border-radius: 100%;
+        cursor: pointer;
+        height: 20px;
+        margin-top: 12px;
+        overflow: hidden;
+        text-indent: 9999px;
+        width: 20px;
+    }
+    .ui-datepicker-prev {
+        float: left;
+        margin-left: 12px;
+    }
+    .ui-datepicker-prev:after {
+        margin: -43px 0px 0px 8px;
+        transform: rotate(45deg);
+    }
+    .ui-datepicker-next {
+        float: right;
+        margin-right: 12px;
+    }
+    .ui-datepicker-next:after {
+        margin: -43px 0px 0px 6px;
+        transform: rotate(-135deg);
+    }
+    .ui-datepicker-prev:after,
+    .ui-datepicker-next:after {
+        border-bottom: 2px solid #ffffff;
+        border-left: 2px solid #ffffff;
+        content: '';
+        display: block;
+        height: 8px;
+        position: absolute;
+        width: 8px;
+    }
+    .ui-datepicker-prev:hover,
+    .ui-datepicker-next:hover,
+    .ui-datepicker-prev:hover:after,
+    .ui-datepicker-next:hover:after {
+        border-color: #333333;
+    }
+    .ui-datepicker-title {
+        font-size: 25px;
+        text-align: center;
+    }
+    .ui-datepicker-calendar {
+        text-align: center;
+        width: 100%;
+    }
+    .ui-datepicker-calendar thead tr th span {
+        color: #9012fe;
+        display: block;
+        font-size: 18px;
+        margin-bottom: 5px;
+        width: 40px;
+    }
+    .ui-state-default {
+        color: #333333;
+        display: block;
+        font-size: 16px;
+        line-height: 40px;
+        text-decoration: none;
+    }
+    .ui-state-default:hover {
+        background: #9012fe;
+        border-radius: 50px;
+        color: #ffffff;
+        transition: all 0.25s cubic-bezier(0.7, -0.12, 0.2, 1.12);
+    }
+    .ui-state-highlight {
+        background-color: #9012fe;
+        border-radius: 50px;
+        color: #ffffff;
+    }
+    .ui-state-active {
+        background-color: #9012fe;
+        border-radius: 50px;
+        color: #ffffff;
+    }
+    .ui-datepicker-unselectable .ui-state-default {
+        border: 2px solid transparent;
+        color: #eee;
+    }
+
+    .main-row {
+        display: flex;
+    }
+    .image-dropzone {
+        margin-right: 32px;
+        width: 240px;
+    }
+    .image-dropzone .main-dropzone {
+        background: #F2F9FD;
+        cursor: pointer;
+        height: 240px;
+        margin-bottom: 5px;
+        overflow: hidden;
+        position: relative;
+        width: 100%;
+    }
+    .image-dropzone .main-dropzone .dz-preview {
+        height: 100%;
+    }
+    .image-dropzone .main-dropzone .dz-preview div {
+        display: none;
+    }
+    .image-dropzone .main-dropzone .dz-preview .dz-image {
+        display: block;
+        height: 100%;
+    }
+    .image-dropzone .main-dropzone .dz-preview .dz-image img {
+        height: auto;
+        position: relative;
+        width: 100%;
+    }
+    .image-dropzone .main-dropzone .plus-icon {
+        left: calc(50% - 19px);
+        position: absolute;
+        top: calc(50% - 19px);
+        width: 38px;
+    }
+    .image-dropzone .image-dropzone-small {
+        display: flex;
+        justify-content: space-between;
+        overflow: hidden;
+    }
+    .image-dropzone .image-dropzone-small .dz-preview div {
+        display: none;
+    }
+    .image-dropzone .image-dropzone-small .dz-preview .dz-image {
+        display: block;
+    }
+    .image-dropzone .image-dropzone-small .small-dropzone {
+        background: #F2F9FD;
+        cursor: pointer;
+        flex-grow: 1;
+        flex-basis: 0;
+        height: 38px;
+        width: 38px;
+    }
+    .image-dropzone .image-dropzone-small .small-dropzone:not(:last-child) {
+        margin-right: 7px;
+    }
+    .comment-block {
+        padding-right: 42px;
+        width: 100%;
+    }
+    .comment-block .instagram-logo {
+        background: #F2F9FD;
+        height: 48px;
+        margin-bottom: 14px;
+        padding: 14px;
+        width: 48px;
+    }
+    .comment-block .instagram-logo .instagram-icon {
+        height: 20px;
+        margin-top: -8px;
+        width: 20px;
+    }
+    .comment-block .comment-area .textarea {
+        background-color: #fafbff;dfb;
+        border-radius: 4px;
+        box-shadow: none;
+        color: inherit;
+        font-size: 14px;
+        margin-bottom: 30px;
+        min-height: 160px;
+        outline: 0;
+        padding: 24px;
+        width: 100%;
+    }
+    .comment-block .comment-button {
+        border: 1px solid #E7EAF0;
+    }
+
+</style>
+
+<div class="container-fluid d-flex gap-10">
+    <div class="create-column">
+        <div id="create-fullcalendar"></div>
+        <section class="add-section">
+            <ul class="nav nav-tabs" id="addPostNav" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active" id="post-tab" data-bs-toggle="tab" data-bs-target="#post-content" type="button" role="tab" aria-controls="post-content" aria-selected="true">POST</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="stories-tab" data-bs-toggle="tab" data-bs-target="#stories-content" type="button" role="tab" aria-controls="stories-content" aria-selected="false">STORIES</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="reels-tab" data-bs-toggle="tab" data-bs-target="#reels-content" type="button" role="tab" aria-controls="reels-content" aria-selected="false">REELS</button>
+                </li>
+            </ul>
+            <div class="tab-content" id="addPostNav">
+                <div class="tab-pane fade show active" id="post-content" role="tabpanel" aria-labelledby="post-tab">
+                    <div class="strategy-select">
+                        <div class="dropdown">
+                            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton12" data-bs-toggle="dropdown" aria-expanded="false">
+                                Strategy: Choose one
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton12">
+                                <li><a class="dropdown-item" href="#">Behind The Scenes</a></li>
+                                <li><a class="dropdown-item" href="#">Education</a></li>
+                                <li><a class="dropdown-item" href="#">Product</a></li>
+                                <li><a class="dropdown-item" href="#">Testimonial</a></li>
+                                <li><a class="dropdown-item" href="#">Community</a></li>
+                                <li><a class="dropdown-item" href="#">Inspiration</a></li>
+                                <li><a class="dropdown-item" href="#">Lifestyle</a></li>
+                                <li><a class="dropdown-item" href="#">Entertainment</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="main-row">
+                        <div class="image-dropzone">
+                            <div id="dropzone-posts-1" class="main-dropzone">
+                                <img alt="Plus" src="{{ '/svg/create/plus.svg' }}" class="plus-icon" />
+                            </div>
+                            <div class="image-dropzone-small">
+                                <div id="dropzone-posts-2" class="small-dropzone"></div>
+                                <div id="dropzone-posts-3" class="small-dropzone"></div>
+                                <div id="dropzone-posts-4" class="small-dropzone"></div>
+                                <div id="dropzone-posts-5" class="small-dropzone"></div>
+                                <div id="dropzone-posts-6" class="small-dropzone"></div>
+                            </div>
+                        </div>
+                        <div class="comment-block">
+                            <div class="instagram-logo">
+                                <img alt="Instagram" src="{{ '/svg/create/instagram.svg' }}" class="instagram-icon" />
+                            </div>
+                            <div class="comment-area">
+                                <textarea placeholder="Craft the perfect caption here..." class="textarea"></textarea>
+                            </div>
+                            <button type="button" class="btn btn-md comment-button">Add first comment</button>
+                        </div>
+                    </div>
+                    <div class="schedule-block">
+                        <h2 class="schedule-title">Schedule your post</h2>
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-6">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" checked>
+                                        <label class="form-check-label" for="flexRadioDefault1">
+                                            Save as draft
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2">
+                                        <label class="form-check-label" for="flexRadioDefault2">
+                                            Send post notification now
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault3">
+                                        <label class="form-check-label" for="flexRadioDefault3">
+                                            Custom time
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="custom-date d-none" id="customDateRadio">
+                                        <button type="button" class="custom-date-label" data-bs-toggle="modal" data-bs-target="#customDateModal">
+                                            <i class="bi bi-clock"></i> Publish on <br/>
+                                            <input placeholder="Select your date" type="text" name="checkIn" value="" id="datepicker-input" class="form-control" />
+                                            <i class="fas fa-calendar-check icon"></i>
+                                        </button>
+                                        <div class="modal fade" id="customDateModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-body">
+                                                        <div id="datepicker" class="modal-datepicker"></div>
+                                                        <div class="modal-quick-actions">
+                                                            <button type="button" class="btn btn-default">
+                                                              <i class="bi bi-sunrise"></i> Morning
+                                                            </button>
+                                                            <button type="button" class="btn btn-default">
+                                                              <i class="bi bi-sun"></i> Noon
+                                                            </button>
+                                                            <button type="button" class="btn btn-default">
+                                                              <i class="bi bi-sunset"></i> Afternoon
+                                                            </button>
+                                                            <button type="button" class="btn btn-default">
+                                                              <i class="bi bi-moon"></i> Evening
+                                                            </button>
+                                                        </div>
+                                                        <div class="modal-chart">
+                                                            <canvas id="dateChart" width="300" height="100"></canvas>
+                                                        </div>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                                        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Pick time</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="stories-content" role="tabpanel" aria-labelledby="stories-tab">Stories</div>
+                <div class="tab-pane fade" id="reels-content" role="tabpanel" aria-labelledby="reels-tab">Reels</div>
+            </div>
+        </section>
+    </div>
+    <div class="phone-column">
+    
+    </div>
+</div>

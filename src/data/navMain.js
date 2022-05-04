@@ -31,6 +31,10 @@ module.exports = [
                     {
                         label: "Manage Apps",
                         path: "/pages/integrations/manage-apps.html"
+                    },
+                    {
+                        label: "Create",
+                        path: "/pages/create.html"
                     }
                 ]
             },

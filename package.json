@@ -63,11 +63,20 @@
         "sass": "^1.49.0"
     },
     "dependencies": {
+        "@fullcalendar/bootstrap": "^5.6.0",
+        "@fullcalendar/common": "^5.9.0",
+        "@fullcalendar/core": "^5.9.0",
+        "@fullcalendar/interaction": "^5.5.0",
+        "@fullcalendar/react": "^5.5.0",
+        "@fullcalendar/rrule": "^5.9.0",
+        "@fullcalendar/timegrid": "^5.5.0",
         "@parcel/transformer-sass": "^2.2.1",
         "@popperjs/core": "^2.11.2",
         "@webpixels/css": "^1.1.91",
         "apexcharts": "^3.33.0",
         "bootstrap": "^5.1.3",
+        "chart.js": "^3.7.1",
+        "dropzone": "^5.9.3",
         "flatpickr": "^4.6.9"
     }
 }
