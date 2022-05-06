@@ -444,6 +444,242 @@
         width: 500px;
         z-index: 1;
     }
+    .phone-column-scroll {
+        height: 100%;
+        overflow: scroll;
+    }
+    .phone-column .user-section {
+        display: flex;
+        margin: 0 19px 18px 42px;
+    }
+    .phone-column .user-section .user-avatar {
+        align-items: center;
+        background: #F2F9FD;
+        border: 1px solid #E8EDFB;
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        height: 74px;
+        margin-right: 21px;
+        position: relative;
+        width: 74px;
+    }
+    .phone-column .user-section .user-avatar .social-icon {
+        bottom: -4px;
+        position: absolute;
+        right: -4px;
+        width: 25px;
+    }
+    .phone-column .user-section .user-block .user-name {
+        font-size: 20px;
+        font-weight: 700;
+        line-height: 22px;
+        margin: 15px 0 5px;
+    }
+
+    .phone-column .user-section .user-block .scheduled-switcher a {
+        color: #b1b4b9;
+        display: inline-block;
+        font-size: 14px;
+        font-weight: 700;
+        text-decoration: none;
+        text-transform: uppercase;
+    }
+
+    .phone-column .user-section .user-block .scheduled-switcher a.active {
+        color: #525F7F;
+    }
+
+    .phone-column .user-section .user-block .scheduled-switcher a:first-child {
+        margin-right: 10px;
+    }
+    .phone-column .phone-type-switcher {
+
+    }
+    .phone-column .phone-type-switcher .nav-tabs {
+        background: #F2F9FD;
+        border: 0;
+        margin-bottom: 6px;
+        padding: 0 7px;
+    }
+    .phone-column .phone-type-switcher .nav-tabs .nav-item {
+        margin: 0;
+        position: relative;
+    }
+    .phone-column .phone-type-switcher .nav-tabs .nav-item:not(:last-child):before {
+        background: #525F7F;
+        content: '';
+        display: inline-block;
+        height: 10px;
+        position: absolute;
+        right: 0;
+        top: calc(50% - 5px);
+        width: 1px;
+    }
+    .phone-column .phone-type-switcher .nav-tabs .nav-item .nav-link {
+        border: 0;
+        padding: 10px;
+    }
+    .phone-column .phone-type-switcher .tab-content .tab-pane.active {
+        display: flex;
+        flex-wrap: wrap;
+    }
+    .phone-column .phone-type-switcher .tab-content .tab-pane .instagram-item {
+        cursor: pointer;
+        flex: 0 0 calc(33.333333% - 2px);
+        margin-bottom: 3px;
+        margin-right: 3px;
+        position: relative;
+        text-align: center;
+        z-index: 1;
+    }
+    .phone-column .phone-type-switcher .tab-content .tab-pane.stories-pane .instagram-item {
+        flex: 0 0 calc(25% - 3px);
+    }
+    .phone-column .phone-type-switcher .tab-content .tab-pane .instagram-item.without-image:before {
+        border-color: transparent #99A5AF transparent transparent;
+        border-style: solid;
+        border-width: 0 25px 25px 0;
+        content: "";
+        height: 0;
+        position: absolute;
+        right: 0;
+        top: 0;
+        z-index: -1;
+        width: 0;
+    }
+    .phone-column .phone-type-switcher .tab-content .tab-pane .instagram-item .add-icon {
+        color: #fff;
+        font-size: 24px;
+        line-height: 24px;
+        padding-top: 35px;
+    }
+    .phone-column .phone-type-switcher .tab-content .tab-pane .instagram-item .add-text {
+        color: #fff;
+        font-size: 15px;
+        line-height: 20px;
+        text-decoration: none;
+        text-transform: uppercase;
+    }
+    .phone-column .phone-type-switcher .tab-content .tab-pane .instagram-item .hover-block {
+        background: rgba(4,68,107,0.8);
+        border: 3px solid #9012fe;
+        bottom: 0;
+        display: none;
+        left: 0;
+        position: absolute;
+        right: 0;
+        top: 0;
+        z-index: 4;
+    }
+    .phone-column .phone-type-switcher .tab-content .tab-pane .instagram-item .hover-block.is-hover {
+        display: block;
+    }
+    .phone-column .phone-type-switcher .tab-content .tab-pane .instagram-item .hover-block .menu-button {
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+        background: none;
+        border: none;
+        cursor: pointer;
+        display: flex;
+        font-size: 14px;
+        outline: 0;
+        padding: 14px 10.5px;
+    }
+    .phone-column .phone-type-switcher .tab-content .tab-pane .instagram-item .hover-block .menu-button .button-dot {
+        background-color: #fff;
+        border-radius: 50%;
+        height: 5px;
+        margin: 2px;
+        width: 5px;
+    }
+    .phone-column .phone-type-switcher .tab-content .tab-pane .instagram-item .hover-block .edit-button {
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+        background: #9012fe;
+        border: none;
+        bottom: 0;
+        cursor: pointer;
+        height: 30px;
+        left: 0;
+        outline: 0;
+        position: absolute;
+        right: 0;
+        text-transform: uppercase;
+        width: 100%;
+    }
+
+    .phone-column .phone-type-switcher .tab-content .tab-pane .instagram-item:nth-child(3n+3) {
+        margin-right: 0;
+    }
+    .phone-column .phone-type-switcher .tab-content .tab-pane.stories-pane .instagram-item:nth-child(3n+3) {
+        margin-right: 3px;
+    }
+    .phone-column .phone-type-switcher .tab-content .tab-pane.stories-pane .instagram-item:nth-child(4n+4) {
+        margin-right: 0;
+    }
+    .phone-column .phone-type-switcher .tab-content .tab-pane .instagram-item .image {
+        height: 150px;
+    }
+    .phone-column .phone-type-switcher .tab-content .tab-pane.stories-pane .instagram-item .image {
+        height: 200px;   
+    }
+    .phone-column .phone-type-switcher .tab-content .tab-pane .instagram-item .image img {
+        height: 100%;
+        min-width: 100%;
+        object-fit: cover;
+    }
+    .modal-instagram .modal-dialog {
+        margin-top: 200px;
+        max-width: 700px;
+    }
+    .modal-instagram .modal-header {
+        border: 0;
+        display: flex;
+        justify-content: flex-end;
+        padding: 0;
+        position: relative;
+    }
+    .modal-instagram .modal-header button {
+        background-color: transparent;
+        border: 0;
+        box-shadow: none;
+        font-size: 22px;
+        line-height: 22px;
+        outline: 0;
+        padding: 0;
+        position: absolute;
+        right: 10px;
+        top: 10px;
+        z-index: 1;
+    }
+    .modal-instagram .modal-body {
+        display: flex;
+    }
+    .modal-instagram .modal-body .instagram-image {
+        flex: 0 0 50%;
+    }
+    .modal-instagram .modal-body .post-info {
+        flex: 0 0 50%;
+        padding-left: 15px;
+    }
+    .modal-instagram .modal-body .post-info .post-date {
+        font-size: 24px;
+        line-height: 26px;
+        margin-bottom: 10px;
+    }
+    .modal-instagram .modal-body .post-info .post-text {
+        font-size: 15px;
+        line-height: 20px;
+        margin-bottom: 15px;
+    }
+    .modal-instagram .modal-body .post-info .post-tags {
+        color: #9012fe;
+        font-size: 15px;
+        line-height: 18px;
+    }
 
     .strategy-select {
         border-bottom-left-radius: 4px;
@@ -966,7 +1202,272 @@
         </section>
     </div>
     <div class="phone-column">
-    
+        <div class="phone-column-scroll">
+            <div class="user-section">
+                <div class="user-avatar">
+                    <img alt="User" src="/svg/create/user.svg" class="user-icon" />
+                    <img alt="Instagram" src="/svg/create/instagram.svg" class="social-icon" />
+                </div>
+                <div class="user-block">
+                    <div class="user-name">@ireal.ro</div>
+                    <div class="scheduled-switcher">
+                        <a href="#" id="allSwitch" class="active">All</a>
+                        <a href="#" id="scheduleSwitch">Scheduled</a>
+                    </div>
+                </div>
+            </div>
+            <div class="phone-type-switcher">
+                <ul class="nav nav-tabs" id="phoneInstagramNav" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active" id="post-tab-phone" data-bs-toggle="tab" data-bs-target="#post-content-phone" type="button" role="tab" aria-controls="post-content-phone" aria-selected="true">POST</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="stories-tab-phone" data-bs-toggle="tab" data-bs-target="#post-content-stories" type="button" role="tab" aria-controls="post-content-stories" aria-selected="false">STORIES</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="reels-tab-phone" data-bs-toggle="tab" data-bs-target="#post-content-reels" type="button" role="tab" aria-controls="post-content-reels" aria-selected="false">REELS</button>
+                    </li>
+                </ul>
+                <div class="tab-content" id="phoneInstagramNav">
+                    <div class="tab-pane fade show active" id="post-content-phone" role="tabpanel" aria-labelledby="post-content-phone">
+                        <div class="instagram-item without-image" style="background-color: rgb(204, 217, 217);">
+                            <div class="image">
+                                <div class="add-icon"><i class="bi bi-plus"></i></div>
+                                <div class="add-text">Lifestyle product shot</div>
+                            </div>
+                            <div class="hover-block">
+                                <button type="button" class="menu-button">
+                                    <span class="button-dot"></span> 
+                                    <span class="button-dot"></span> 
+                                    <span class="button-dot"></span>
+                                </button>
+                                <button type="button" class="edit-button">Edit</button>
+                            </div>
+                        </div>
+                        <div class="instagram-item without-image" style="background-color: rgb(130, 196, 238);">
+                            <div class="image">
+                                <div class="add-icon"><i class="bi bi-plus"></i></div>
+                                <div class="add-text">Re-Post Customer Pic</div>
+                            </div>
+                            <div class="hover-block">
+                                <button type="button" class="menu-button">
+                                    <span class="button-dot"></span> 
+                                    <span class="button-dot"></span> 
+                                    <span class="button-dot"></span>
+                                </button>
+                                <button type="button" class="edit-button">Edit</button>
+                            </div>
+                        </div>
+                        <div class="instagram-item without-image" style="background-color: rgb(204, 217, 217);">
+                            <div class="image">
+                                <div class="add-icon"><i class="bi bi-plus"></i></div>
+                                <div class="add-text">Answer Product FAQ</div>
+                            </div>
+                            <div class="hover-block">
+                                <button type="button" class="menu-button">
+                                    <span class="button-dot"></span> 
+                                    <span class="button-dot"></span> 
+                                    <span class="button-dot"></span>
+                                </button>
+                                <button type="button" class="edit-button">Edit</button>
+                            </div>
+                        </div>
+                        <div class="instagram-item without-image" style="background-color: rgb(4, 68, 107);">
+                            <div class="image">
+                                <div class="add-icon"><i class="bi bi-plus"></i></div>
+                                <div class="add-text">Product Design BTS</div>
+                            </div>
+                            <div class="hover-block">
+                                <button type="button" class="menu-button">
+                                    <span class="button-dot"></span> 
+                                    <span class="button-dot"></span> 
+                                    <span class="button-dot"></span>
+                                </button>
+                                <button type="button" class="edit-button">Edit</button>
+                            </div>
+                        </div>
+                        <div class="instagram-item without-image" style="background-color: rgb(204, 217, 217);">
+                            <div class="image">
+                                <div class="add-icon"><i class="bi bi-plus"></i></div>
+                                <div class="add-text">Product fun fucts</div>
+                            </div>
+                            <div class="hover-block">
+                                <button type="button" class="menu-button">
+                                    <span class="button-dot"></span> 
+                                    <span class="button-dot"></span> 
+                                    <span class="button-dot"></span>
+                                </button>
+                                <button type="button" class="edit-button">Edit</button>
+                            </div>
+                        </div>
+                        <div class="instagram-item without-image" style="background-color: rgb(98, 143, 169);">
+                            <div class="image">
+                                <div class="add-icon"><i class="bi bi-plus"></i></div>
+                                <div class="add-text">Customer Review</div>
+                            </div>
+                            <div class="hover-block">
+                                <button type="button" class="menu-button">
+                                    <span class="button-dot"></span> 
+                                    <span class="button-dot"></span> 
+                                    <span class="button-dot"></span>
+                                </button>
+                                <button type="button" class="edit-button">Edit</button>
+                            </div>
+                        </div>
+                        <div class="instagram-item" data-bs-toggle="modal" data-bs-target="#postImageModal">
+                            <div class="image">
+                                <img alt="Instagram post" src="/svg/create/post-1.png" />
+                            </div>
+                        </div>
+                        <div class="instagram-item" data-bs-toggle="modal" data-bs-target="#postImageModal">
+                            <div class="image">
+                                <img alt="Instagram post" src="/svg/create/post-2.jpeg" />
+                            </div>
+                        </div>
+                        <div class="instagram-item" data-bs-toggle="modal" data-bs-target="#postImageModal">
+                            <div class="image">
+                                <img alt="Instagram post" src="/svg/create/post-3.jpeg" />
+                            </div>
+                        </div>
+                        <div class="instagram-item" data-bs-toggle="modal" data-bs-target="#postImageModal">
+                            <div class="image">
+                                <img alt="Instagram post" src="/svg/create/post-2.jpeg" />
+                            </div>
+                        </div>
+                        <div class="instagram-item" data-bs-toggle="modal" data-bs-target="#postImageModal">
+                            <div class="image">
+                                <img alt="Instagram post" src="/svg/create/post-1.png" />
+                            </div>
+                        </div>
+                        <div class="instagram-item" data-bs-toggle="modal" data-bs-target="#postImageModal">
+                            <div class="image">
+                                <img alt="Instagram post" src="/svg/create/post-3.jpeg" />
+                            </div>
+                        </div>
+                        <div class="instagram-item" data-bs-toggle="modal" data-bs-target="#postImageModal">
+                            <div class="image">
+                                <img alt="Instagram post" src="/svg/create/post-3.jpeg" />
+                            </div>
+                        </div>
+                        <div class="instagram-item" data-bs-toggle="modal" data-bs-target="#postImageModal">
+                            <div class="image">
+                                <img alt="Instagram post" src="/svg/create/post-2.jpeg" />
+                            </div>
+                        </div>
+                        <div class="instagram-item" data-bs-toggle="modal" data-bs-target="#postImageModal">
+                            <div class="image">
+                                <img alt="Instagram post" src="/svg/create/post-1.png" />
+                            </div>
+                        </div>
+                        <div class="instagram-item" data-bs-toggle="modal" data-bs-target="#postImageModal">
+                            <div class="image">
+                                <img alt="Instagram post" src="/svg/create/post-1.png" />
+                            </div>
+                        </div>
+                        <div class="instagram-item" data-bs-toggle="modal" data-bs-target="#postImageModal">
+                            <div class="image">
+                                <img alt="Instagram post" src="/svg/create/post-2.jpeg" />
+                            </div>
+                        </div>
+                        <div class="instagram-item" data-bs-toggle="modal" data-bs-target="#postImageModal">
+                            <div class="image">
+                                <img alt="Instagram post" src="/svg/create/post-3.jpeg" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane stories-pane fade" id="post-content-stories" role="tabpanel" aria-labelledby="post-content-stories">
+                        <div class="instagram-item">
+                            <div class="image">
+                                <img alt="Instagram post" src="/svg/create/post-1.png" />
+                            </div>
+                        </div>
+                        <div class="instagram-item">
+                            <div class="image">
+                                <img alt="Instagram post" src="/svg/create/post-2.jpeg" />
+                            </div>
+                        </div>
+                        <div class="instagram-item">
+                            <div class="image">
+                                <img alt="Instagram post" src="/svg/create/post-3.jpeg" />
+                            </div>
+                        </div>
+                        <div class="instagram-item">
+                            <div class="image">
+                                <img alt="Instagram post" src="/svg/create/post-2.jpeg" />
+                            </div>
+                        </div>
+                        <div class="instagram-item">
+                            <div class="image">
+                                <img alt="Instagram post" src="/svg/create/post-1.png" />
+                            </div>
+                        </div>
+                        <div class="instagram-item">
+                            <div class="image">
+                                <img alt="Instagram post" src="/svg/create/post-3.jpeg" />
+                            </div>
+                        </div>
+                        <div class="instagram-item">
+                            <div class="image">
+                                <img alt="Instagram post" src="/svg/create/post-3.jpeg" />
+                            </div>
+                        </div>
+                        <div class="instagram-item">
+                            <div class="image">
+                                <img alt="Instagram post" src="/svg/create/post-2.jpeg" />
+                            </div>
+                        </div>
+                        <div class="instagram-item">
+                            <div class="image">
+                                <img alt="Instagram post" src="/svg/create/post-1.png" />
+                            </div>
+                        </div>
+                        <div class="instagram-item">
+                            <div class="image">
+                                <img alt="Instagram post" src="/svg/create/post-1.png" />
+                            </div>
+                        </div>
+                        <div class="instagram-item">
+                            <div class="image">
+                                <img alt="Instagram post" src="/svg/create/post-2.jpeg" />
+                            </div>
+                        </div>
+                        <div class="instagram-item">
+                            <div class="image">
+                                <img alt="Instagram post" src="/svg/create/post-3.jpeg" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="post-content-reels" role="tabpanel" aria-labelledby="post-content-reels">
+                        Reels
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade modal-instagram" id="postImageModal" tabindex="-1" aria-labelledby="postImageModal" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        <i class="bi bi-x"></i>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="instagram-image">
+                        <a href="#">
+                            <img alt="Instagram post" src="/svg/create/post-1.png" />
+                        </a>
+                    </div>
+                    <div class="post-info">
+                        <h2 class="post-date">Mon 21st Feb | 4:06 PM</h2>
+                        <p class="post-text">📷 S-a lansat noua campanie “Niciodată Singur”, o campanie de tip caritabil filmată pe setul Ireal.ro.</p>
+                        <p class="post-text">🤗Campania își propune să strângă donații pentru vârstnicii singuri și ne bucurăm că am făcut parte din acest proiect frumos.</p>
+                        <p class="post-text">🤗 Va lăsăm aici un cadru behind the scenes si campania!</p>
+                        <div class="post-tags">#irealproduction</div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 

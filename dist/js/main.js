@@ -142,10 +142,10 @@
       this[globalName] = mainExports;
     }
   }
-})({"hq2tp":[function(require,module,exports) {
+})({"85r0j":[function(require,module,exports) {
 "use strict";
 var HMR_HOST = null;
-var HMR_PORT = 50361;
+var HMR_PORT = 1234;
 var HMR_SECURE = false;
 var HMR_ENV_HASH = "62b4c8a1dd9cbcca";
 module.bundle.HMR_BUNDLE_ID = "f1a33f3a193ef3c0";
@@ -748,6 +748,28 @@ document.addEventListener('DOMContentLoaded', ()=>{
         format: 'dd-mm-yyyy',
         startDate: '+1d',
         altField: "#datepicker-input-story"
+    });
+    // Scheduled switcher
+    $('.scheduled-switcher a').click(function() {
+        var switchA = $(this);
+        var switchAll = $('#allSwitch');
+        var switchSchedule = $('#scheduleSwitch');
+        $('.scheduled-switcher a').removeClass('active');
+        if (switchA.attr('id') === 'allSwitch') switchAll.addClass('active');
+        else switchSchedule.addClass('active');
+    });
+    // Instagram hover block
+    $('.instagram-item').hover(function() {
+        $(this).find('.hover-block').toggleClass('is-hover');
+    });
+    // Instagram modal
+    $('.phone-type-switcher .instagram-item').click(function() {
+        var currentImage = $(this).find('img');
+        var instagramModal = $('#postImageModal');
+        var instagramModalImg = instagramModal.find('.instagram-image img');
+        if (currentImage) {
+            if (instagramModalImg) instagramModalImg.attr('src', currentImage[0].src);
+        }
     });
     // Line chart
     const lineChartEl = document.querySelector("#chart-line");
@@ -60435,6 +60457,6 @@ function styleChanged(style, prevStyle) {
     /******/ }();
 });
 
-},{}]},["hq2tp","iGeph"], "iGeph", "parcelRequire15ff")
+},{}]},["85r0j","iGeph"], "iGeph", "parcelRequire15ff")
 
 //# sourceMappingURL=main.js.map

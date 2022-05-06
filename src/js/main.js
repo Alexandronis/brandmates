@@ -232,6 +232,38 @@ document.addEventListener('DOMContentLoaded', () => {
         altField: "#datepicker-input-story",
     });
 
+    // Scheduled switcher
+    $('.scheduled-switcher a').click(function() {
+        var switchA = $(this);
+        var switchAll = $('#allSwitch');
+        var switchSchedule = $('#scheduleSwitch');
+
+        $('.scheduled-switcher a').removeClass('active');
+
+        if (switchA.attr('id') === 'allSwitch') {
+            switchAll.addClass('active');
+        } else {
+            switchSchedule.addClass('active');
+        }
+    });
+
+    // Instagram hover block
+    $('.instagram-item').hover(function () {
+        $(this).find('.hover-block').toggleClass('is-hover');
+     });
+    // Instagram modal
+    $('.phone-type-switcher .instagram-item').click(function() {
+        var currentImage = $(this).find('img');
+        var instagramModal = $('#postImageModal');
+        var instagramModalImg = instagramModal.find('.instagram-image img');
+
+        if (currentImage) {
+            if (instagramModalImg) {
+                instagramModalImg.attr('src', currentImage[0].src);
+            }
+        }
+    });
+
     // Line chart
     const lineChartEl = document.querySelector("#chart-line");
     if(lineChartEl) {
