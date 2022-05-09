@@ -175,18 +175,11 @@ document.addEventListener('DOMContentLoaded', () => {
     let calendar = new Calendar(calendarEl, {
         plugins: [timegrid],
         headerToolbar: {
-            left: 'prev, next today',
-            center: 'title',
-            right: 'timeGridWeek, timeGridDay,listWeek'
+            // left: 'prev, next today',
+            left: 'prev, next',
         },
-        buttonText: {
-            today: 'Today',
-            // month: 'month',
-            week: 'Weekly',
-            day: 'Daily',
-            list: 'List'
-        },
-        initialView: 'timeGridDay',
+        dayHeaderFormat: { weekday: 'short', day: 'numeric', omitCommas: true },
+        initialView: 'timeGridWeek',
         validRange: function(today) {
             return {
                 start: today,
@@ -195,7 +188,7 @@ document.addEventListener('DOMContentLoaded', () => {
         events: 'https://fullcalendar.io/demo-events.json'
     });
 
-    // calendar.render();
+    calendar.render();
 
     // Radio functionality
     var checkedRadio = $('input[name = "flexRadioDefault"]');

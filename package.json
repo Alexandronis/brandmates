@@ -64,6 +64,7 @@
     },
     "dependencies": {
         "@fullcalendar/bootstrap": "^5.6.0",
+        "@fullcalendar/bootstrap5": "^5.6.0",
         "@fullcalendar/common": "^5.9.0",
         "@fullcalendar/core": "^5.9.0",
         "@fullcalendar/interaction": "^5.5.0",

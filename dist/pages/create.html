@@ -9,6 +9,9 @@
         <!-- Bootstrap Icons -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
 
+<!-- Fullcalendar -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.2/fullcalendar.min.css" integrity="sha512-KXkS7cFeWpYwcoXxyfOumLyRGXMp7BTMTjwrgjMg0+hls4thG2JGzRgQtRfnAuKTn2KWTDZX4UdPg+xTs8k80Q==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
 <!-- Styles -->
 <link rel="stylesheet" type="text/css" href="/css/main.css">
 
@@ -414,6 +417,160 @@
         margin-right: 560px;
         position: relative;
     }
+    .create-column .create-fullcalendar {
+        background: #fff;
+        border-radius:10px;
+        margin: 0 auto 20px;
+        max-width: 1200px;
+        padding: 20px;
+    }
+    .create-column .create-fullcalendar>.fc-view-harness {
+        height: auto !important;
+        padding: 0 50px;
+    }
+    .create-column .create-fullcalendar .fc-scrollgrid-section-body {
+        display: none;
+    }
+    .create-column .create-fullcalendar .fc-header-toolbar {
+        margin: 0;
+        position: relative;
+    }
+    .create-column .create-fullcalendar .fc-view-harness .fc-timegrid tbody {
+        display: none;
+    }
+    .create-column .create-fullcalendar .fc-view-harness .fc-timegrid thead tr th {
+        border: 0;
+    }
+    .create-column .create-fullcalendar .fc-view-harness .fc-timegrid .fc-col-header-cell .fc-scrollgrid-sync-inner a {
+        display: inline-block;
+        cursor: pointer;
+        font-size: 14px;
+        font-weight: 400;
+        width: 25px;
+    }
+    .create-column .create-fullcalendar .fc-header-toolbar button {
+        background: none;
+    }
+    .create-column .create-fullcalendar .fc-header-toolbar .fc-toolbar-chunk:first-child {
+        display: none;
+    }
+    .create-column .create-fullcalendar .fc-header-toolbar button .fc-icon {
+        display: none;
+    }
+    .create-column .create-fullcalendar .fc-header-toolbar button.fc-button {
+        display: none;
+    }
+    .create-column .create-fullcalendar .fc-header-toolbar button.fc-prev-button,
+    .create-column .create-fullcalendar .fc-header-toolbar button.fc-next-button {
+        display: block;
+    }
+    .create-column .create-fullcalendar .fc-header-toolbar button.fc-next-button {
+        position: absolute;
+        right: 0;
+        top: 10px;
+    }
+    .create-column .create-fullcalendar .fc-header-toolbar button.fc-next-button:before {
+        border-bottom: 8px solid transparent;
+        border-left: 10px solid #9012fe;
+        border-top: 8px solid transparent;
+        content: '';
+        display: inline-block;
+        height: 0;
+        width: 0;
+    }
+    .create-column .create-fullcalendar .fc-header-toolbar button.fc-prev-button {
+        left: 0;
+        position: absolute;
+        top: 10px;
+    }
+    .create-column .create-fullcalendar .fc-header-toolbar button.fc-prev-button:before {
+        border-bottom: 8px solid transparent;
+        border-right: 10px solid #9012fe;
+        border-top: 8px solid transparent;
+        content: '';
+        display: inline-block;
+        height: 0;
+        width: 0;
+    }
+    .create-column .create-fullcalendar .fc-header-toolbar .fc-button-group+.fc-next-button {
+        display: none;
+    }
+    .create-column .create-fullcalendar .fc-header-toolbar .fc-today-button {
+        display: none;
+    }
+
+/*
+    .fc-timegrid-slot-label {
+        font-weight: 800;
+    }
+
+    .fc-timegrid-slots table tr {
+        transition: all .15s ease;
+    }
+
+    .fc-timegrid-slots table tr:hover {
+        background: #fffae2 !important;
+        transition: all .15s ease;
+    }
+
+    .fc-timegrid-slots table tr:nth-child(4n + 1) {
+      //background: #fffae2 !important;}
+
+    .fc-timegrid-slot-label[data-time*=":15"],
+    .fc-timegrid-slot-label[data-time*=":30"],
+    .fc-timegrid-slot-label[data-time*=":45"] {
+        font-size: 80%;
+        opacity: 0.5;
+        font-weight: 400;
+    }
+
+    {}
+
+    .fc .fc-highlight {
+        background: #f16621 !important;
+    }
+
+    .fc-day-today {
+        background-color: #fffae2;
+    }
+
+    .fc-day-past {
+        background-color: #f7edee;
+    }
+
+    th.fc-day-today:before {
+        content: 'Today';
+        font-size: 80%;
+        line-height: 1;
+        text-transform: uppercase;
+        opacity: 0.6;
+    }
+
+    th.fc-day-past:before {
+        content: 'Past';
+        font-size: 80%;
+        line-height: 1;
+        text-transform: uppercase;
+        opacity: 0.6;
+    }
+
+    th.fc-day-future:before {
+        content: "\00a0";
+        font-size: 80%;
+        line-height: 1;
+        text-transform: uppercase;
+    }
+
+    .fc-timegrid-axis-frame:after {
+        content: 'V';
+        font-family: 'Times';
+        line-height: 36px;
+        text-align: center;
+        display: block;
+        width: 100%;
+        font-size: 24px;
+        color: #f16621;
+    }*/
 
     .add-section {
         background: #fff;
@@ -563,7 +720,7 @@
     }
     .phone-column .phone-type-switcher .tab-content .tab-pane .instagram-item .hover-block {
         background: rgba(4,68,107,0.8);
-        border: 3px solid #9012fe;
+        /*border: 3px solid #9012fe;*/
         bottom: 0;
         display: none;
         left: 0;
@@ -585,14 +742,11 @@
         display: flex;
         font-size: 14px;
         outline: 0;
-        padding: 14px 10.5px;
+        padding: 0 10.5px;
     }
-    .phone-column .phone-type-switcher .tab-content .tab-pane .instagram-item .hover-block .menu-button .button-dot {
-        background-color: #fff;
-        border-radius: 50%;
-        height: 5px;
-        margin: 2px;
-        width: 5px;
+    .phone-column .phone-type-switcher .tab-content .tab-pane .instagram-item .hover-block .menu-button .bi-three-dots {
+        font-size: 30px;
+        line-height: 30px;
     }
     .phone-column .phone-type-switcher .tab-content .tab-pane .instagram-item .hover-block .edit-button {
         -webkit-appearance: none;
@@ -609,6 +763,19 @@
         right: 0;
         text-transform: uppercase;
         width: 100%;
+    }
+    .phone-column .phone-type-switcher .tab-content .tab-pane .instagram-item .hover-block-post {
+        background: rgba(255,255,255,0.8);
+    }
+    .phone-column .phone-type-switcher .tab-content .tab-pane .instagram-item .hover-block-post .menu-button .bi-three-dots {
+        color: #000;
+    }
+    .phone-column .phone-type-switcher .tab-content .tab-pane .instagram-item .hover-block-post .bi-plus-circle {
+        color: #000;
+        font-size: 30px;
+        left: calc(50% - 15px);
+        position: absolute;
+        top: calc(50% - 15px);
     }
 
     .phone-column .phone-type-switcher .tab-content .tab-pane .instagram-item:nth-child(3n+3) {
@@ -965,7 +1132,7 @@
 
 <div class="container-fluid d-flex gap-10">
     <div class="create-column">
-        <div id="create-fullcalendar"></div>
+        <div id="create-fullcalendar" class="create-fullcalendar"></div>
         <section class="add-section">
             <ul class="nav nav-tabs" id="addPostNav" role="tablist">
                 <li class="nav-item" role="presentation">
@@ -1237,9 +1404,7 @@
                             </div>
                             <div class="hover-block">
                                 <button type="button" class="menu-button">
-                                    <span class="button-dot"></span> 
-                                    <span class="button-dot"></span> 
-                                    <span class="button-dot"></span>
+                                    <i class="bi bi-three-dots"></i>
                                 </button>
                                 <button type="button" class="edit-button">Edit</button>
                             </div>
@@ -1251,9 +1416,7 @@
                             </div>
                             <div class="hover-block">
                                 <button type="button" class="menu-button">
-                                    <span class="button-dot"></span> 
-                                    <span class="button-dot"></span> 
-                                    <span class="button-dot"></span>
+                                    <i class="bi bi-three-dots"></i>
                                 </button>
                                 <button type="button" class="edit-button">Edit</button>
                             </div>
@@ -1265,9 +1428,7 @@
                             </div>
                             <div class="hover-block">
                                 <button type="button" class="menu-button">
-                                    <span class="button-dot"></span> 
-                                    <span class="button-dot"></span> 
-                                    <span class="button-dot"></span>
+                                    <i class="bi bi-three-dots"></i>
                                 </button>
                                 <button type="button" class="edit-button">Edit</button>
                             </div>
@@ -1279,9 +1440,7 @@
                             </div>
                             <div class="hover-block">
                                 <button type="button" class="menu-button">
-                                    <span class="button-dot"></span> 
-                                    <span class="button-dot"></span> 
-                                    <span class="button-dot"></span>
+                                    <i class="bi bi-three-dots"></i>
                                 </button>
                                 <button type="button" class="edit-button">Edit</button>
                             </div>
@@ -1293,9 +1452,7 @@
                             </div>
                             <div class="hover-block">
                                 <button type="button" class="menu-button">
-                                    <span class="button-dot"></span> 
-                                    <span class="button-dot"></span> 
-                                    <span class="button-dot"></span>
+                                    <i class="bi bi-three-dots"></i>
                                 </button>
                                 <button type="button" class="edit-button">Edit</button>
                             </div>
@@ -1307,9 +1464,7 @@
                             </div>
                             <div class="hover-block">
                                 <button type="button" class="menu-button">
-                                    <span class="button-dot"></span> 
-                                    <span class="button-dot"></span> 
-                                    <span class="button-dot"></span>
+                                    <i class="bi bi-three-dots"></i>
                                 </button>
                                 <button type="button" class="edit-button">Edit</button>
                             </div>
@@ -1318,60 +1473,132 @@
                             <div class="image">
                                 <img alt="Instagram post" src="/svg/create/post-1.png" />
                             </div>
+                            <div class="hover-block hover-block-post">
+                                <button type="button" class="menu-button">
+                                    <i class="bi bi-three-dots"></i>
+                                </button>
+                                <i class="bi bi-plus-circle"></i>
+                            </div>
                         </div>
                         <div class="instagram-item" data-bs-toggle="modal" data-bs-target="#postImageModal">
                             <div class="image">
                                 <img alt="Instagram post" src="/svg/create/post-2.jpeg" />
+                            </div>
+                            <div class="hover-block hover-block-post">
+                                <button type="button" class="menu-button">
+                                    <i class="bi bi-three-dots"></i>
+                                </button>
+                                <i class="bi bi-plus-circle"></i>
                             </div>
                         </div>
                         <div class="instagram-item" data-bs-toggle="modal" data-bs-target="#postImageModal">
                             <div class="image">
                                 <img alt="Instagram post" src="/svg/create/post-3.jpeg" />
                             </div>
+                            <div class="hover-block hover-block-post">
+                                <button type="button" class="menu-button">
+                                    <i class="bi bi-three-dots"></i>
+                                </button>
+                                <i class="bi bi-plus-circle"></i>
+                            </div>
                         </div>
                         <div class="instagram-item" data-bs-toggle="modal" data-bs-target="#postImageModal">
                             <div class="image">
                                 <img alt="Instagram post" src="/svg/create/post-2.jpeg" />
+                            </div>
+                            <div class="hover-block hover-block-post">
+                                <button type="button" class="menu-button">
+                                    <i class="bi bi-three-dots"></i>
+                                </button>
+                                <i class="bi bi-plus-circle"></i>
                             </div>
                         </div>
                         <div class="instagram-item" data-bs-toggle="modal" data-bs-target="#postImageModal">
                             <div class="image">
                                 <img alt="Instagram post" src="/svg/create/post-1.png" />
                             </div>
-                        </div>
-                        <div class="instagram-item" data-bs-toggle="modal" data-bs-target="#postImageModal">
-                            <div class="image">
-                                <img alt="Instagram post" src="/svg/create/post-3.jpeg" />
+                            <div class="hover-block hover-block-post">
+                                <button type="button" class="menu-button">
+                                    <i class="bi bi-three-dots"></i>
+                                </button>
+                                <i class="bi bi-plus-circle"></i>
                             </div>
                         </div>
                         <div class="instagram-item" data-bs-toggle="modal" data-bs-target="#postImageModal">
                             <div class="image">
                                 <img alt="Instagram post" src="/svg/create/post-3.jpeg" />
+                            </div>
+                            <div class="hover-block hover-block-post">
+                                <button type="button" class="menu-button">
+                                    <i class="bi bi-three-dots"></i>
+                                </button>
+                                <i class="bi bi-plus-circle"></i>
+                            </div>
+                        </div>
+                        <div class="instagram-item" data-bs-toggle="modal" data-bs-target="#postImageModal">
+                            <div class="image">
+                                <img alt="Instagram post" src="/svg/create/post-3.jpeg" />
+                            </div>
+                            <div class="hover-block hover-block-post">
+                                <button type="button" class="menu-button">
+                                    <i class="bi bi-three-dots"></i>
+                                </button>
+                                <i class="bi bi-plus-circle"></i>
                             </div>
                         </div>
                         <div class="instagram-item" data-bs-toggle="modal" data-bs-target="#postImageModal">
                             <div class="image">
                                 <img alt="Instagram post" src="/svg/create/post-2.jpeg" />
                             </div>
-                        </div>
-                        <div class="instagram-item" data-bs-toggle="modal" data-bs-target="#postImageModal">
-                            <div class="image">
-                                <img alt="Instagram post" src="/svg/create/post-1.png" />
+                            <div class="hover-block hover-block-post">
+                                <button type="button" class="menu-button">
+                                    <i class="bi bi-three-dots"></i>
+                                </button>
+                                <i class="bi bi-plus-circle"></i>
                             </div>
                         </div>
                         <div class="instagram-item" data-bs-toggle="modal" data-bs-target="#postImageModal">
                             <div class="image">
                                 <img alt="Instagram post" src="/svg/create/post-1.png" />
+                            </div>
+                            <div class="hover-block hover-block-post">
+                                <button type="button" class="menu-button">
+                                    <i class="bi bi-three-dots"></i>
+                                </button>
+                                <i class="bi bi-plus-circle"></i>
+                            </div>
+                        </div>
+                        <div class="instagram-item" data-bs-toggle="modal" data-bs-target="#postImageModal">
+                            <div class="image">
+                                <img alt="Instagram post" src="/svg/create/post-1.png" />
+                            </div>
+                            <div class="hover-block hover-block-post">
+                                <button type="button" class="menu-button">
+                                    <i class="bi bi-three-dots"></i>
+                                </button>
+                                <i class="bi bi-plus-circle"></i>
                             </div>
                         </div>
                         <div class="instagram-item" data-bs-toggle="modal" data-bs-target="#postImageModal">
                             <div class="image">
                                 <img alt="Instagram post" src="/svg/create/post-2.jpeg" />
                             </div>
+                            <div class="hover-block hover-block-post">
+                                <button type="button" class="menu-button">
+                                    <i class="bi bi-three-dots"></i>
+                                </button>
+                                <i class="bi bi-plus-circle"></i>
+                            </div>
                         </div>
                         <div class="instagram-item" data-bs-toggle="modal" data-bs-target="#postImageModal">
                             <div class="image">
                                 <img alt="Instagram post" src="/svg/create/post-3.jpeg" />
+                            </div>
+                            <div class="hover-block hover-block-post">
+                                <button type="button" class="menu-button">
+                                    <i class="bi bi-three-dots"></i>
+                                </button>
+                                <i class="bi bi-plus-circle"></i>
                             </div>
                         </div>
                     </div>
@@ -1380,60 +1607,132 @@
                             <div class="image">
                                 <img alt="Instagram post" src="/svg/create/post-1.png" />
                             </div>
+                            <div class="hover-block">
+                                <button type="button" class="menu-button">
+                                    <i class="bi bi-three-dots"></i>
+                                </button>
+                                <button type="button" class="edit-button">Edit</button>
+                            </div>
                         </div>
                         <div class="instagram-item">
                             <div class="image">
                                 <img alt="Instagram post" src="/svg/create/post-2.jpeg" />
+                            </div>
+                            <div class="hover-block">
+                                <button type="button" class="menu-button">
+                                    <i class="bi bi-three-dots"></i>
+                                </button>
+                                <button type="button" class="edit-button">Edit</button>
                             </div>
                         </div>
                         <div class="instagram-item">
                             <div class="image">
                                 <img alt="Instagram post" src="/svg/create/post-3.jpeg" />
                             </div>
+                            <div class="hover-block">
+                                <button type="button" class="menu-button">
+                                    <i class="bi bi-three-dots"></i>
+                                </button>
+                                <button type="button" class="edit-button">Edit</button>
+                            </div>
                         </div>
                         <div class="instagram-item">
                             <div class="image">
                                 <img alt="Instagram post" src="/svg/create/post-2.jpeg" />
+                            </div>
+                            <div class="hover-block">
+                                <button type="button" class="menu-button">
+                                    <i class="bi bi-three-dots"></i>
+                                </button>
+                                <button type="button" class="edit-button">Edit</button>
                             </div>
                         </div>
                         <div class="instagram-item">
                             <div class="image">
                                 <img alt="Instagram post" src="/svg/create/post-1.png" />
                             </div>
-                        </div>
-                        <div class="instagram-item">
-                            <div class="image">
-                                <img alt="Instagram post" src="/svg/create/post-3.jpeg" />
+                            <div class="hover-block">
+                                <button type="button" class="menu-button">
+                                    <i class="bi bi-three-dots"></i>
+                                </button>
+                                <button type="button" class="edit-button">Edit</button>
                             </div>
                         </div>
                         <div class="instagram-item">
                             <div class="image">
                                 <img alt="Instagram post" src="/svg/create/post-3.jpeg" />
+                            </div>
+                            <div class="hover-block">
+                                <button type="button" class="menu-button">
+                                    <i class="bi bi-three-dots"></i>
+                                </button>
+                                <button type="button" class="edit-button">Edit</button>
+                            </div>
+                        </div>
+                        <div class="instagram-item">
+                            <div class="image">
+                                <img alt="Instagram post" src="/svg/create/post-3.jpeg" />
+                            </div>
+                            <div class="hover-block">
+                                <button type="button" class="menu-button">
+                                    <i class="bi bi-three-dots"></i>
+                                </button>
+                                <button type="button" class="edit-button">Edit</button>
                             </div>
                         </div>
                         <div class="instagram-item">
                             <div class="image">
                                 <img alt="Instagram post" src="/svg/create/post-2.jpeg" />
                             </div>
-                        </div>
-                        <div class="instagram-item">
-                            <div class="image">
-                                <img alt="Instagram post" src="/svg/create/post-1.png" />
+                            <div class="hover-block">
+                                <button type="button" class="menu-button">
+                                    <i class="bi bi-three-dots"></i>
+                                </button>
+                                <button type="button" class="edit-button">Edit</button>
                             </div>
                         </div>
                         <div class="instagram-item">
                             <div class="image">
                                 <img alt="Instagram post" src="/svg/create/post-1.png" />
+                            </div>
+                            <div class="hover-block">
+                                <button type="button" class="menu-button">
+                                    <i class="bi bi-three-dots"></i>
+                                </button>
+                                <button type="button" class="edit-button">Edit</button>
+                            </div>
+                        </div>
+                        <div class="instagram-item">
+                            <div class="image">
+                                <img alt="Instagram post" src="/svg/create/post-1.png" />
+                            </div>
+                            <div class="hover-block">
+                                <button type="button" class="menu-button">
+                                    <i class="bi bi-three-dots"></i>
+                                </button>
+                                <button type="button" class="edit-button">Edit</button>
                             </div>
                         </div>
                         <div class="instagram-item">
                             <div class="image">
                                 <img alt="Instagram post" src="/svg/create/post-2.jpeg" />
                             </div>
+                            <div class="hover-block">
+                                <button type="button" class="menu-button">
+                                    <i class="bi bi-three-dots"></i>
+                                </button>
+                                <button type="button" class="edit-button">Edit</button>
+                            </div>
                         </div>
                         <div class="instagram-item">
                             <div class="image">
                                 <img alt="Instagram post" src="/svg/create/post-3.jpeg" />
+                            </div>
+                            <div class="hover-block">
+                                <button type="button" class="menu-button">
+                                    <i class="bi bi-three-dots"></i>
+                                </button>
+                                <button type="button" class="edit-button">Edit</button>
                             </div>
                         </div>
                     </div>

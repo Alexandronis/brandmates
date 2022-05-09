@@ -142,10 +142,10 @@
       this[globalName] = mainExports;
     }
   }
-})({"85r0j":[function(require,module,exports) {
+})({"l1vSb":[function(require,module,exports) {
 "use strict";
 var HMR_HOST = null;
-var HMR_PORT = 1234;
+var HMR_PORT = 50676;
 var HMR_SECURE = false;
 var HMR_ENV_HASH = "62b4c8a1dd9cbcca";
 module.bundle.HMR_BUNDLE_ID = "f1a33f3a193ef3c0";
@@ -705,18 +705,15 @@ document.addEventListener('DOMContentLoaded', ()=>{
             _timegridDefault.default
         ],
         headerToolbar: {
-            left: 'prev, next today',
-            center: 'title',
-            right: 'timeGridWeek, timeGridDay,listWeek'
+            // left: 'prev, next today',
+            left: 'prev, next'
         },
-        buttonText: {
-            today: 'Today',
-            // month: 'month',
-            week: 'Weekly',
-            day: 'Daily',
-            list: 'List'
+        dayHeaderFormat: {
+            weekday: 'short',
+            day: 'numeric',
+            omitCommas: true
         },
-        initialView: 'timeGridDay',
+        initialView: 'timeGridWeek',
         validRange: function(today) {
             return {
                 start: today
@@ -724,7 +721,7 @@ document.addEventListener('DOMContentLoaded', ()=>{
         },
         events: 'https://fullcalendar.io/demo-events.json'
     });
-    // calendar.render();
+    calendar.render();
     // Radio functionality
     var checkedRadio = $('input[name = "flexRadioDefault"]');
     checkedRadio.click(function() {
@@ -60457,6 +60454,6 @@ function styleChanged(style, prevStyle) {
     /******/ }();
 });
 
-},{}]},["85r0j","iGeph"], "iGeph", "parcelRequire15ff")
+},{}]},["l1vSb","iGeph"], "iGeph", "parcelRequire15ff")
 
 //# sourceMappingURL=main.js.map
