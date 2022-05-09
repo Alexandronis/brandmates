@@ -142,10 +142,10 @@
       this[globalName] = mainExports;
     }
   }
-})({"85r0j":[function(require,module,exports) {
+})({"hGrKA":[function(require,module,exports) {
 "use strict";
 var HMR_HOST = null;
-var HMR_PORT = 1234;
+var HMR_PORT = 54190;
 var HMR_SECURE = false;
 var HMR_ENV_HASH = "62b4c8a1dd9cbcca";
 module.bundle.HMR_BUNDLE_ID = "f1a33f3a193ef3c0";
@@ -533,6 +533,8 @@ var _timegrid = require("@fullcalendar/timegrid");
 var _timegridDefault = parcelHelpers.interopDefault(_timegrid);
 var _daygrid = require("@fullcalendar/daygrid");
 var _daygridDefault = parcelHelpers.interopDefault(_daygrid);
+var _interaction = require("@fullcalendar/interaction");
+var _interactionDefault = parcelHelpers.interopDefault(_interaction);
 var _list = require("@fullcalendar/list");
 var _listDefault = parcelHelpers.interopDefault(_list);
 // Bootstrap JS
@@ -790,7 +792,8 @@ document.addEventListener('DOMContentLoaded', ()=>{
             plugins: [
                 _timegridDefault.default,
                 _daygridDefault.default,
-                _listDefault.default
+                _listDefault.default,
+                _interactionDefault.default
             ],
             headerToolbar: {
                 left: 'prev, title, next',
@@ -803,6 +806,15 @@ document.addEventListener('DOMContentLoaded', ()=>{
                 omitCommas: true
             },
             initialView: 'dayGridMonth',
+            eventClick: function(event) {
+                $("#schedule-edit").modal('show');
+            },
+            dateClick: function(date, jsEvent, view) {
+                $('#schedule-add').modal('show');
+            },
+            selectable: true,
+            selectHelper: true,
+            editable: true,
             validRange: function(today) {
                 return {
                     start: today
@@ -836,7 +848,7 @@ document.addEventListener('DOMContentLoaded', ()=>{
     if (datepickerEl) new datepicker().init('.datepicker');
 });
 
-},{"bootstrap":"4VxGl","./apex-charts/line":"ixfcR","./apex-charts/bar":"eBeiv","./apex-charts/users":"6kPXv","./apex-charts/spark":"beBa7","./datepicker":"dvEkG","@fullcalendar/core":"5UuDO","@fullcalendar/timegrid":"lpFmL","@parcel/transformer-js/src/esmodule-helpers.js":"6jXwo","chart.js":"7J4yz","dropzone":"koWJM","@fullcalendar/list":"fYCNr","@fullcalendar/daygrid":"1Spto"}],"4VxGl":[function(require,module,exports) {
+},{"bootstrap":"4VxGl","./apex-charts/line":"ixfcR","./apex-charts/bar":"eBeiv","./apex-charts/users":"6kPXv","./apex-charts/spark":"beBa7","./datepicker":"dvEkG","@fullcalendar/core":"5UuDO","@fullcalendar/timegrid":"lpFmL","@parcel/transformer-js/src/esmodule-helpers.js":"6jXwo","chart.js":"7J4yz","dropzone":"koWJM","@fullcalendar/list":"fYCNr","@fullcalendar/daygrid":"1Spto","@fullcalendar/interaction":"2Lwrt"}],"4VxGl":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "Alert", ()=>Alert
@@ -60944,6 +60956,1978 @@ var main = _common.createPlugin({
 });
 exports.default = main;
 
-},{"./main.css":"fPMPN","@fullcalendar/common":"cnjgQ","tslib":"5i9Vz","@parcel/transformer-js/src/esmodule-helpers.js":"6jXwo"}],"fPMPN":[function() {},{}]},["85r0j","iGeph"], "iGeph", "parcelRequire15ff")
+},{"./main.css":"fPMPN","@fullcalendar/common":"cnjgQ","tslib":"5i9Vz","@parcel/transformer-js/src/esmodule-helpers.js":"6jXwo"}],"fPMPN":[function() {},{}],"2Lwrt":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "Draggable", ()=>ExternalDraggable
+);
+parcelHelpers.export(exports, "FeaturefulElementDragging", ()=>FeaturefulElementDragging
+);
+parcelHelpers.export(exports, "PointerDragging", ()=>PointerDragging
+);
+parcelHelpers.export(exports, "ThirdPartyDraggable", ()=>ThirdPartyDraggable
+);
+/*!
+FullCalendar v5.10.2
+Docs & License: https://fullcalendar.io/
+(c) 2021 Adam Shaw
+*/ var _common = require("@fullcalendar/common");
+var _tslib = require("tslib");
+_common.config.touchMouseIgnoreWait = 500;
+var ignoreMouseDepth = 0;
+var listenerCnt = 0;
+var isWindowTouchMoveCancelled = false;
+/*
+Uses a "pointer" abstraction, which monitors UI events for both mouse and touch.
+Tracks when the pointer "drags" on a certain element, meaning down+move+up.
+
+Also, tracks if there was touch-scrolling.
+Also, can prevent touch-scrolling from happening.
+Also, can fire pointermove events when scrolling happens underneath, even when no real pointer movement.
+
+emits:
+- pointerdown
+- pointermove
+- pointerup
+*/ var PointerDragging = /** @class */ function() {
+    function PointerDragging1(containerEl) {
+        var _this = this;
+        this.subjectEl = null;
+        // options that can be directly assigned by caller
+        this.selector = ''; // will cause subjectEl in all emitted events to be this element
+        this.handleSelector = '';
+        this.shouldIgnoreMove = false;
+        this.shouldWatchScroll = true; // for simulating pointermove on scroll
+        // internal states
+        this.isDragging = false;
+        this.isTouchDragging = false;
+        this.wasTouchScroll = false;
+        // Mouse
+        // ----------------------------------------------------------------------------------------------------
+        this.handleMouseDown = function(ev) {
+            if (!_this.shouldIgnoreMouse() && isPrimaryMouseButton(ev) && _this.tryStart(ev)) {
+                var pev = _this.createEventFromMouse(ev, true);
+                _this.emitter.trigger('pointerdown', pev);
+                _this.initScrollWatch(pev);
+                if (!_this.shouldIgnoreMove) document.addEventListener('mousemove', _this.handleMouseMove);
+                document.addEventListener('mouseup', _this.handleMouseUp);
+            }
+        };
+        this.handleMouseMove = function(ev) {
+            var pev = _this.createEventFromMouse(ev);
+            _this.recordCoords(pev);
+            _this.emitter.trigger('pointermove', pev);
+        };
+        this.handleMouseUp = function(ev) {
+            document.removeEventListener('mousemove', _this.handleMouseMove);
+            document.removeEventListener('mouseup', _this.handleMouseUp);
+            _this.emitter.trigger('pointerup', _this.createEventFromMouse(ev));
+            _this.cleanup(); // call last so that pointerup has access to props
+        };
+        // Touch
+        // ----------------------------------------------------------------------------------------------------
+        this.handleTouchStart = function(ev) {
+            if (_this.tryStart(ev)) {
+                _this.isTouchDragging = true;
+                var pev = _this.createEventFromTouch(ev, true);
+                _this.emitter.trigger('pointerdown', pev);
+                _this.initScrollWatch(pev);
+                // unlike mouse, need to attach to target, not document
+                // https://stackoverflow.com/a/45760014
+                var targetEl = ev.target;
+                if (!_this.shouldIgnoreMove) targetEl.addEventListener('touchmove', _this.handleTouchMove);
+                targetEl.addEventListener('touchend', _this.handleTouchEnd);
+                targetEl.addEventListener('touchcancel', _this.handleTouchEnd); // treat it as a touch end
+                // attach a handler to get called when ANY scroll action happens on the page.
+                // this was impossible to do with normal on/off because 'scroll' doesn't bubble.
+                // http://stackoverflow.com/a/32954565/96342
+                window.addEventListener('scroll', _this.handleTouchScroll, true);
+            }
+        };
+        this.handleTouchMove = function(ev) {
+            var pev = _this.createEventFromTouch(ev);
+            _this.recordCoords(pev);
+            _this.emitter.trigger('pointermove', pev);
+        };
+        this.handleTouchEnd = function(ev) {
+            if (_this.isDragging) {
+                var targetEl = ev.target;
+                targetEl.removeEventListener('touchmove', _this.handleTouchMove);
+                targetEl.removeEventListener('touchend', _this.handleTouchEnd);
+                targetEl.removeEventListener('touchcancel', _this.handleTouchEnd);
+                window.removeEventListener('scroll', _this.handleTouchScroll, true); // useCaptured=true
+                _this.emitter.trigger('pointerup', _this.createEventFromTouch(ev));
+                _this.cleanup(); // call last so that pointerup has access to props
+                _this.isTouchDragging = false;
+                startIgnoringMouse();
+            }
+        };
+        this.handleTouchScroll = function() {
+            _this.wasTouchScroll = true;
+        };
+        this.handleScroll = function(ev) {
+            if (!_this.shouldIgnoreMove) {
+                var pageX = window.pageXOffset - _this.prevScrollX + _this.prevPageX;
+                var pageY = window.pageYOffset - _this.prevScrollY + _this.prevPageY;
+                _this.emitter.trigger('pointermove', {
+                    origEvent: ev,
+                    isTouch: _this.isTouchDragging,
+                    subjectEl: _this.subjectEl,
+                    pageX: pageX,
+                    pageY: pageY,
+                    deltaX: pageX - _this.origPageX,
+                    deltaY: pageY - _this.origPageY
+                });
+            }
+        };
+        this.containerEl = containerEl;
+        this.emitter = new _common.Emitter();
+        containerEl.addEventListener('mousedown', this.handleMouseDown);
+        containerEl.addEventListener('touchstart', this.handleTouchStart, {
+            passive: true
+        });
+        listenerCreated();
+    }
+    PointerDragging1.prototype.destroy = function() {
+        this.containerEl.removeEventListener('mousedown', this.handleMouseDown);
+        this.containerEl.removeEventListener('touchstart', this.handleTouchStart, {
+            passive: true
+        });
+        listenerDestroyed();
+    };
+    PointerDragging1.prototype.tryStart = function(ev) {
+        var subjectEl = this.querySubjectEl(ev);
+        var downEl = ev.target;
+        if (subjectEl && (!this.handleSelector || _common.elementClosest(downEl, this.handleSelector))) {
+            this.subjectEl = subjectEl;
+            this.isDragging = true; // do this first so cancelTouchScroll will work
+            this.wasTouchScroll = false;
+            return true;
+        }
+        return false;
+    };
+    PointerDragging1.prototype.cleanup = function() {
+        isWindowTouchMoveCancelled = false;
+        this.isDragging = false;
+        this.subjectEl = null;
+        // keep wasTouchScroll around for later access
+        this.destroyScrollWatch();
+    };
+    PointerDragging1.prototype.querySubjectEl = function(ev) {
+        if (this.selector) return _common.elementClosest(ev.target, this.selector);
+        return this.containerEl;
+    };
+    PointerDragging1.prototype.shouldIgnoreMouse = function() {
+        return ignoreMouseDepth || this.isTouchDragging;
+    };
+    // can be called by user of this class, to cancel touch-based scrolling for the current drag
+    PointerDragging1.prototype.cancelTouchScroll = function() {
+        if (this.isDragging) isWindowTouchMoveCancelled = true;
+    };
+    // Scrolling that simulates pointermoves
+    // ----------------------------------------------------------------------------------------------------
+    PointerDragging1.prototype.initScrollWatch = function(ev) {
+        if (this.shouldWatchScroll) {
+            this.recordCoords(ev);
+            window.addEventListener('scroll', this.handleScroll, true); // useCapture=true
+        }
+    };
+    PointerDragging1.prototype.recordCoords = function(ev) {
+        if (this.shouldWatchScroll) {
+            this.prevPageX = ev.pageX;
+            this.prevPageY = ev.pageY;
+            this.prevScrollX = window.pageXOffset;
+            this.prevScrollY = window.pageYOffset;
+        }
+    };
+    PointerDragging1.prototype.destroyScrollWatch = function() {
+        if (this.shouldWatchScroll) window.removeEventListener('scroll', this.handleScroll, true); // useCaptured=true
+    };
+    // Event Normalization
+    // ----------------------------------------------------------------------------------------------------
+    PointerDragging1.prototype.createEventFromMouse = function(ev, isFirst) {
+        var deltaX = 0;
+        var deltaY = 0;
+        // TODO: repeat code
+        if (isFirst) {
+            this.origPageX = ev.pageX;
+            this.origPageY = ev.pageY;
+        } else {
+            deltaX = ev.pageX - this.origPageX;
+            deltaY = ev.pageY - this.origPageY;
+        }
+        return {
+            origEvent: ev,
+            isTouch: false,
+            subjectEl: this.subjectEl,
+            pageX: ev.pageX,
+            pageY: ev.pageY,
+            deltaX: deltaX,
+            deltaY: deltaY
+        };
+    };
+    PointerDragging1.prototype.createEventFromTouch = function(ev, isFirst) {
+        var touches = ev.touches;
+        var pageX;
+        var pageY;
+        var deltaX = 0;
+        var deltaY = 0;
+        // if touch coords available, prefer,
+        // because FF would give bad ev.pageX ev.pageY
+        if (touches && touches.length) {
+            pageX = touches[0].pageX;
+            pageY = touches[0].pageY;
+        } else {
+            pageX = ev.pageX;
+            pageY = ev.pageY;
+        }
+        // TODO: repeat code
+        if (isFirst) {
+            this.origPageX = pageX;
+            this.origPageY = pageY;
+        } else {
+            deltaX = pageX - this.origPageX;
+            deltaY = pageY - this.origPageY;
+        }
+        return {
+            origEvent: ev,
+            isTouch: true,
+            subjectEl: this.subjectEl,
+            pageX: pageX,
+            pageY: pageY,
+            deltaX: deltaX,
+            deltaY: deltaY
+        };
+    };
+    return PointerDragging1;
+}();
+// Returns a boolean whether this was a left mouse click and no ctrl key (which means right click on Mac)
+function isPrimaryMouseButton(ev) {
+    return ev.button === 0 && !ev.ctrlKey;
+}
+// Ignoring fake mouse events generated by touch
+// ----------------------------------------------------------------------------------------------------
+function startIgnoringMouse() {
+    ignoreMouseDepth += 1;
+    setTimeout(function() {
+        ignoreMouseDepth -= 1;
+    }, _common.config.touchMouseIgnoreWait);
+}
+// We want to attach touchmove as early as possible for Safari
+// ----------------------------------------------------------------------------------------------------
+function listenerCreated() {
+    listenerCnt += 1;
+    if (listenerCnt === 1) window.addEventListener('touchmove', onWindowTouchMove, {
+        passive: false
+    });
+}
+function listenerDestroyed() {
+    listenerCnt -= 1;
+    if (!listenerCnt) window.removeEventListener('touchmove', onWindowTouchMove, {
+        passive: false
+    });
+}
+function onWindowTouchMove(ev) {
+    if (isWindowTouchMoveCancelled) ev.preventDefault();
+}
+/*
+An effect in which an element follows the movement of a pointer across the screen.
+The moving element is a clone of some other element.
+Must call start + handleMove + stop.
+*/ var ElementMirror = /** @class */ function() {
+    function ElementMirror1() {
+        this.isVisible = false; // must be explicitly enabled
+        this.sourceEl = null;
+        this.mirrorEl = null;
+        this.sourceElRect = null; // screen coords relative to viewport
+        // options that can be set directly by caller
+        this.parentNode = document.body; // HIGHLY SUGGESTED to set this to sidestep ShadowDOM issues
+        this.zIndex = 9999;
+        this.revertDuration = 0;
+    }
+    ElementMirror1.prototype.start = function(sourceEl, pageX, pageY) {
+        this.sourceEl = sourceEl;
+        this.sourceElRect = this.sourceEl.getBoundingClientRect();
+        this.origScreenX = pageX - window.pageXOffset;
+        this.origScreenY = pageY - window.pageYOffset;
+        this.deltaX = 0;
+        this.deltaY = 0;
+        this.updateElPosition();
+    };
+    ElementMirror1.prototype.handleMove = function(pageX, pageY) {
+        this.deltaX = pageX - window.pageXOffset - this.origScreenX;
+        this.deltaY = pageY - window.pageYOffset - this.origScreenY;
+        this.updateElPosition();
+    };
+    // can be called before start
+    ElementMirror1.prototype.setIsVisible = function(bool) {
+        if (bool) {
+            if (!this.isVisible) {
+                if (this.mirrorEl) this.mirrorEl.style.display = '';
+                this.isVisible = bool; // needs to happen before updateElPosition
+                this.updateElPosition(); // because was not updating the position while invisible
+            }
+        } else if (this.isVisible) {
+            if (this.mirrorEl) this.mirrorEl.style.display = 'none';
+            this.isVisible = bool;
+        }
+    };
+    // always async
+    ElementMirror1.prototype.stop = function(needsRevertAnimation, callback) {
+        var _this = this;
+        var done = function() {
+            _this.cleanup();
+            callback();
+        };
+        if (needsRevertAnimation && this.mirrorEl && this.isVisible && this.revertDuration && (this.deltaX || this.deltaY // if same coords, transition won't work
+        )) this.doRevertAnimation(done, this.revertDuration);
+        else setTimeout(done, 0);
+    };
+    ElementMirror1.prototype.doRevertAnimation = function(callback, revertDuration) {
+        var mirrorEl = this.mirrorEl;
+        var finalSourceElRect = this.sourceEl.getBoundingClientRect(); // because autoscrolling might have happened
+        mirrorEl.style.transition = 'top ' + revertDuration + 'ms,' + 'left ' + revertDuration + 'ms';
+        _common.applyStyle(mirrorEl, {
+            left: finalSourceElRect.left,
+            top: finalSourceElRect.top
+        });
+        _common.whenTransitionDone(mirrorEl, function() {
+            mirrorEl.style.transition = '';
+            callback();
+        });
+    };
+    ElementMirror1.prototype.cleanup = function() {
+        if (this.mirrorEl) {
+            _common.removeElement(this.mirrorEl);
+            this.mirrorEl = null;
+        }
+        this.sourceEl = null;
+    };
+    ElementMirror1.prototype.updateElPosition = function() {
+        if (this.sourceEl && this.isVisible) _common.applyStyle(this.getMirrorEl(), {
+            left: this.sourceElRect.left + this.deltaX,
+            top: this.sourceElRect.top + this.deltaY
+        });
+    };
+    ElementMirror1.prototype.getMirrorEl = function() {
+        var sourceElRect = this.sourceElRect;
+        var mirrorEl = this.mirrorEl;
+        if (!mirrorEl) {
+            mirrorEl = this.mirrorEl = this.sourceEl.cloneNode(true); // cloneChildren=true
+            // we don't want long taps or any mouse interaction causing selection/menus.
+            // would use preventSelection(), but that prevents selectstart, causing problems.
+            mirrorEl.classList.add('fc-unselectable');
+            mirrorEl.classList.add('fc-event-dragging');
+            _common.applyStyle(mirrorEl, {
+                position: 'fixed',
+                zIndex: this.zIndex,
+                visibility: '',
+                boxSizing: 'border-box',
+                width: sourceElRect.right - sourceElRect.left,
+                height: sourceElRect.bottom - sourceElRect.top,
+                right: 'auto',
+                bottom: 'auto',
+                margin: 0
+            });
+            this.parentNode.appendChild(mirrorEl);
+        }
+        return mirrorEl;
+    };
+    return ElementMirror1;
+}();
+/*
+Is a cache for a given element's scroll information (all the info that ScrollController stores)
+in addition the "client rectangle" of the element.. the area within the scrollbars.
+
+The cache can be in one of two modes:
+- doesListening:false - ignores when the container is scrolled by someone else
+- doesListening:true - watch for scrolling and update the cache
+*/ var ScrollGeomCache = /** @class */ function(_super) {
+    _tslib.__extends(ScrollGeomCache1, _super);
+    function ScrollGeomCache1(scrollController, doesListening) {
+        var _this = _super.call(this) || this;
+        _this.handleScroll = function() {
+            _this.scrollTop = _this.scrollController.getScrollTop();
+            _this.scrollLeft = _this.scrollController.getScrollLeft();
+            _this.handleScrollChange();
+        };
+        _this.scrollController = scrollController;
+        _this.doesListening = doesListening;
+        _this.scrollTop = _this.origScrollTop = scrollController.getScrollTop();
+        _this.scrollLeft = _this.origScrollLeft = scrollController.getScrollLeft();
+        _this.scrollWidth = scrollController.getScrollWidth();
+        _this.scrollHeight = scrollController.getScrollHeight();
+        _this.clientWidth = scrollController.getClientWidth();
+        _this.clientHeight = scrollController.getClientHeight();
+        _this.clientRect = _this.computeClientRect(); // do last in case it needs cached values
+        if (_this.doesListening) _this.getEventTarget().addEventListener('scroll', _this.handleScroll);
+        return _this;
+    }
+    ScrollGeomCache1.prototype.destroy = function() {
+        if (this.doesListening) this.getEventTarget().removeEventListener('scroll', this.handleScroll);
+    };
+    ScrollGeomCache1.prototype.getScrollTop = function() {
+        return this.scrollTop;
+    };
+    ScrollGeomCache1.prototype.getScrollLeft = function() {
+        return this.scrollLeft;
+    };
+    ScrollGeomCache1.prototype.setScrollTop = function(top) {
+        this.scrollController.setScrollTop(top);
+        if (!this.doesListening) {
+            // we are not relying on the element to normalize out-of-bounds scroll values
+            // so we need to sanitize ourselves
+            this.scrollTop = Math.max(Math.min(top, this.getMaxScrollTop()), 0);
+            this.handleScrollChange();
+        }
+    };
+    ScrollGeomCache1.prototype.setScrollLeft = function(top) {
+        this.scrollController.setScrollLeft(top);
+        if (!this.doesListening) {
+            // we are not relying on the element to normalize out-of-bounds scroll values
+            // so we need to sanitize ourselves
+            this.scrollLeft = Math.max(Math.min(top, this.getMaxScrollLeft()), 0);
+            this.handleScrollChange();
+        }
+    };
+    ScrollGeomCache1.prototype.getClientWidth = function() {
+        return this.clientWidth;
+    };
+    ScrollGeomCache1.prototype.getClientHeight = function() {
+        return this.clientHeight;
+    };
+    ScrollGeomCache1.prototype.getScrollWidth = function() {
+        return this.scrollWidth;
+    };
+    ScrollGeomCache1.prototype.getScrollHeight = function() {
+        return this.scrollHeight;
+    };
+    ScrollGeomCache1.prototype.handleScrollChange = function() {};
+    return ScrollGeomCache1;
+}(_common.ScrollController);
+var ElementScrollGeomCache = /** @class */ function(_super) {
+    _tslib.__extends(ElementScrollGeomCache1, _super);
+    function ElementScrollGeomCache1(el, doesListening) {
+        return _super.call(this, new _common.ElementScrollController(el), doesListening) || this;
+    }
+    ElementScrollGeomCache1.prototype.getEventTarget = function() {
+        return this.scrollController.el;
+    };
+    ElementScrollGeomCache1.prototype.computeClientRect = function() {
+        return _common.computeInnerRect(this.scrollController.el);
+    };
+    return ElementScrollGeomCache1;
+}(ScrollGeomCache);
+var WindowScrollGeomCache = /** @class */ function(_super) {
+    _tslib.__extends(WindowScrollGeomCache1, _super);
+    function WindowScrollGeomCache1(doesListening) {
+        return _super.call(this, new _common.WindowScrollController(), doesListening) || this;
+    }
+    WindowScrollGeomCache1.prototype.getEventTarget = function() {
+        return window;
+    };
+    WindowScrollGeomCache1.prototype.computeClientRect = function() {
+        return {
+            left: this.scrollLeft,
+            right: this.scrollLeft + this.clientWidth,
+            top: this.scrollTop,
+            bottom: this.scrollTop + this.clientHeight
+        };
+    };
+    // the window is the only scroll object that changes it's rectangle relative
+    // to the document's topleft as it scrolls
+    WindowScrollGeomCache1.prototype.handleScrollChange = function() {
+        this.clientRect = this.computeClientRect();
+    };
+    return WindowScrollGeomCache1;
+}(ScrollGeomCache);
+// If available we are using native "performance" API instead of "Date"
+// Read more about it on MDN:
+// https://developer.mozilla.org/en-US/docs/Web/API/Performance
+var getTime = typeof performance === 'function' ? performance.now : Date.now;
+/*
+For a pointer interaction, automatically scrolls certain scroll containers when the pointer
+approaches the edge.
+
+The caller must call start + handleMove + stop.
+*/ var AutoScroller = /** @class */ function() {
+    function AutoScroller1() {
+        var _this = this;
+        // options that can be set by caller
+        this.isEnabled = true;
+        this.scrollQuery = [
+            window,
+            '.fc-scroller'
+        ];
+        this.edgeThreshold = 50; // pixels
+        this.maxVelocity = 300; // pixels per second
+        // internal state
+        this.pointerScreenX = null;
+        this.pointerScreenY = null;
+        this.isAnimating = false;
+        this.scrollCaches = null;
+        // protect against the initial pointerdown being too close to an edge and starting the scroll
+        this.everMovedUp = false;
+        this.everMovedDown = false;
+        this.everMovedLeft = false;
+        this.everMovedRight = false;
+        this.animate = function() {
+            if (_this.isAnimating) {
+                var edge = _this.computeBestEdge(_this.pointerScreenX + window.pageXOffset, _this.pointerScreenY + window.pageYOffset);
+                if (edge) {
+                    var now = getTime();
+                    _this.handleSide(edge, (now - _this.msSinceRequest) / 1000);
+                    _this.requestAnimation(now);
+                } else _this.isAnimating = false; // will stop animation
+            }
+        };
+    }
+    AutoScroller1.prototype.start = function(pageX, pageY, scrollStartEl) {
+        if (this.isEnabled) {
+            this.scrollCaches = this.buildCaches(scrollStartEl);
+            this.pointerScreenX = null;
+            this.pointerScreenY = null;
+            this.everMovedUp = false;
+            this.everMovedDown = false;
+            this.everMovedLeft = false;
+            this.everMovedRight = false;
+            this.handleMove(pageX, pageY);
+        }
+    };
+    AutoScroller1.prototype.handleMove = function(pageX, pageY) {
+        if (this.isEnabled) {
+            var pointerScreenX = pageX - window.pageXOffset;
+            var pointerScreenY = pageY - window.pageYOffset;
+            var yDelta = this.pointerScreenY === null ? 0 : pointerScreenY - this.pointerScreenY;
+            var xDelta = this.pointerScreenX === null ? 0 : pointerScreenX - this.pointerScreenX;
+            if (yDelta < 0) this.everMovedUp = true;
+            else if (yDelta > 0) this.everMovedDown = true;
+            if (xDelta < 0) this.everMovedLeft = true;
+            else if (xDelta > 0) this.everMovedRight = true;
+            this.pointerScreenX = pointerScreenX;
+            this.pointerScreenY = pointerScreenY;
+            if (!this.isAnimating) {
+                this.isAnimating = true;
+                this.requestAnimation(getTime());
+            }
+        }
+    };
+    AutoScroller1.prototype.stop = function() {
+        if (this.isEnabled) {
+            this.isAnimating = false; // will stop animation
+            for(var _i = 0, _a = this.scrollCaches; _i < _a.length; _i++){
+                var scrollCache = _a[_i];
+                scrollCache.destroy();
+            }
+            this.scrollCaches = null;
+        }
+    };
+    AutoScroller1.prototype.requestAnimation = function(now) {
+        this.msSinceRequest = now;
+        requestAnimationFrame(this.animate);
+    };
+    AutoScroller1.prototype.handleSide = function(edge, seconds) {
+        var scrollCache = edge.scrollCache;
+        var edgeThreshold = this.edgeThreshold;
+        var invDistance = edgeThreshold - edge.distance;
+        var velocity = invDistance * invDistance / (edgeThreshold * edgeThreshold) * this.maxVelocity * seconds;
+        var sign = 1;
+        switch(edge.name){
+            case 'left':
+                sign = -1;
+            // falls through
+            case 'right':
+                scrollCache.setScrollLeft(scrollCache.getScrollLeft() + velocity * sign);
+                break;
+            case 'top':
+                sign = -1;
+            // falls through
+            case 'bottom':
+                scrollCache.setScrollTop(scrollCache.getScrollTop() + velocity * sign);
+                break;
+        }
+    };
+    // left/top are relative to document topleft
+    AutoScroller1.prototype.computeBestEdge = function(left, top) {
+        var edgeThreshold = this.edgeThreshold;
+        var bestSide = null;
+        var scrollCaches = this.scrollCaches || [];
+        for(var _i = 0, scrollCaches_1 = scrollCaches; _i < scrollCaches_1.length; _i++){
+            var scrollCache = scrollCaches_1[_i];
+            var rect = scrollCache.clientRect;
+            var leftDist = left - rect.left;
+            var rightDist = rect.right - left;
+            var topDist = top - rect.top;
+            var bottomDist = rect.bottom - top;
+            // completely within the rect?
+            if (leftDist >= 0 && rightDist >= 0 && topDist >= 0 && bottomDist >= 0) {
+                if (topDist <= edgeThreshold && this.everMovedUp && scrollCache.canScrollUp() && (!bestSide || bestSide.distance > topDist)) bestSide = {
+                    scrollCache: scrollCache,
+                    name: 'top',
+                    distance: topDist
+                };
+                if (bottomDist <= edgeThreshold && this.everMovedDown && scrollCache.canScrollDown() && (!bestSide || bestSide.distance > bottomDist)) bestSide = {
+                    scrollCache: scrollCache,
+                    name: 'bottom',
+                    distance: bottomDist
+                };
+                if (leftDist <= edgeThreshold && this.everMovedLeft && scrollCache.canScrollLeft() && (!bestSide || bestSide.distance > leftDist)) bestSide = {
+                    scrollCache: scrollCache,
+                    name: 'left',
+                    distance: leftDist
+                };
+                if (rightDist <= edgeThreshold && this.everMovedRight && scrollCache.canScrollRight() && (!bestSide || bestSide.distance > rightDist)) bestSide = {
+                    scrollCache: scrollCache,
+                    name: 'right',
+                    distance: rightDist
+                };
+            }
+        }
+        return bestSide;
+    };
+    AutoScroller1.prototype.buildCaches = function(scrollStartEl) {
+        return this.queryScrollEls(scrollStartEl).map(function(el) {
+            if (el === window) return new WindowScrollGeomCache(false); // false = don't listen to user-generated scrolls
+            return new ElementScrollGeomCache(el, false); // false = don't listen to user-generated scrolls
+        });
+    };
+    AutoScroller1.prototype.queryScrollEls = function(scrollStartEl) {
+        var els = [];
+        for(var _i = 0, _a = this.scrollQuery; _i < _a.length; _i++){
+            var query = _a[_i];
+            if (typeof query === 'object') els.push(query);
+            else els.push.apply(els, Array.prototype.slice.call(_common.getElRoot(scrollStartEl).querySelectorAll(query)));
+        }
+        return els;
+    };
+    return AutoScroller1;
+}();
+/*
+Monitors dragging on an element. Has a number of high-level features:
+- minimum distance required before dragging
+- minimum wait time ("delay") before dragging
+- a mirror element that follows the pointer
+*/ var FeaturefulElementDragging = /** @class */ function(_super) {
+    _tslib.__extends(FeaturefulElementDragging1, _super);
+    function FeaturefulElementDragging1(containerEl, selector) {
+        var _this = _super.call(this, containerEl) || this;
+        _this.containerEl = containerEl;
+        // options that can be directly set by caller
+        // the caller can also set the PointerDragging's options as well
+        _this.delay = null;
+        _this.minDistance = 0;
+        _this.touchScrollAllowed = true; // prevents drag from starting and blocks scrolling during drag
+        _this.mirrorNeedsRevert = false;
+        _this.isInteracting = false; // is the user validly moving the pointer? lasts until pointerup
+        _this.isDragging = false; // is it INTENTFULLY dragging? lasts until after revert animation
+        _this.isDelayEnded = false;
+        _this.isDistanceSurpassed = false;
+        _this.delayTimeoutId = null;
+        _this.onPointerDown = function(ev) {
+            if (!_this.isDragging) {
+                _this.isInteracting = true;
+                _this.isDelayEnded = false;
+                _this.isDistanceSurpassed = false;
+                _common.preventSelection(document.body);
+                _common.preventContextMenu(document.body);
+                // prevent links from being visited if there's an eventual drag.
+                // also prevents selection in older browsers (maybe?).
+                // not necessary for touch, besides, browser would complain about passiveness.
+                if (!ev.isTouch) ev.origEvent.preventDefault();
+                _this.emitter.trigger('pointerdown', ev);
+                if (_this.isInteracting && !_this.pointer.shouldIgnoreMove) {
+                    // actions related to initiating dragstart+dragmove+dragend...
+                    _this.mirror.setIsVisible(false); // reset. caller must set-visible
+                    _this.mirror.start(ev.subjectEl, ev.pageX, ev.pageY); // must happen on first pointer down
+                    _this.startDelay(ev);
+                    if (!_this.minDistance) _this.handleDistanceSurpassed(ev);
+                }
+            }
+        };
+        _this.onPointerMove = function(ev) {
+            if (_this.isInteracting) {
+                _this.emitter.trigger('pointermove', ev);
+                if (!_this.isDistanceSurpassed) {
+                    var minDistance = _this.minDistance;
+                    var distanceSq = void 0; // current distance from the origin, squared
+                    var deltaX = ev.deltaX, deltaY = ev.deltaY;
+                    distanceSq = deltaX * deltaX + deltaY * deltaY;
+                    if (distanceSq >= minDistance * minDistance) _this.handleDistanceSurpassed(ev);
+                }
+                if (_this.isDragging) {
+                    // a real pointer move? (not one simulated by scrolling)
+                    if (ev.origEvent.type !== 'scroll') {
+                        _this.mirror.handleMove(ev.pageX, ev.pageY);
+                        _this.autoScroller.handleMove(ev.pageX, ev.pageY);
+                    }
+                    _this.emitter.trigger('dragmove', ev);
+                }
+            }
+        };
+        _this.onPointerUp = function(ev) {
+            if (_this.isInteracting) {
+                _this.isInteracting = false;
+                _common.allowSelection(document.body);
+                _common.allowContextMenu(document.body);
+                _this.emitter.trigger('pointerup', ev); // can potentially set mirrorNeedsRevert
+                if (_this.isDragging) {
+                    _this.autoScroller.stop();
+                    _this.tryStopDrag(ev); // which will stop the mirror
+                }
+                if (_this.delayTimeoutId) {
+                    clearTimeout(_this.delayTimeoutId);
+                    _this.delayTimeoutId = null;
+                }
+            }
+        };
+        var pointer = _this.pointer = new PointerDragging(containerEl);
+        pointer.emitter.on('pointerdown', _this.onPointerDown);
+        pointer.emitter.on('pointermove', _this.onPointerMove);
+        pointer.emitter.on('pointerup', _this.onPointerUp);
+        if (selector) pointer.selector = selector;
+        _this.mirror = new ElementMirror();
+        _this.autoScroller = new AutoScroller();
+        return _this;
+    }
+    FeaturefulElementDragging1.prototype.destroy = function() {
+        this.pointer.destroy();
+        // HACK: simulate a pointer-up to end the current drag
+        // TODO: fire 'dragend' directly and stop interaction. discourage use of pointerup event (b/c might not fire)
+        this.onPointerUp({});
+    };
+    FeaturefulElementDragging1.prototype.startDelay = function(ev) {
+        var _this = this;
+        if (typeof this.delay === 'number') this.delayTimeoutId = setTimeout(function() {
+            _this.delayTimeoutId = null;
+            _this.handleDelayEnd(ev);
+        }, this.delay); // not assignable to number!
+        else this.handleDelayEnd(ev);
+    };
+    FeaturefulElementDragging1.prototype.handleDelayEnd = function(ev) {
+        this.isDelayEnded = true;
+        this.tryStartDrag(ev);
+    };
+    FeaturefulElementDragging1.prototype.handleDistanceSurpassed = function(ev) {
+        this.isDistanceSurpassed = true;
+        this.tryStartDrag(ev);
+    };
+    FeaturefulElementDragging1.prototype.tryStartDrag = function(ev) {
+        if (this.isDelayEnded && this.isDistanceSurpassed) {
+            if (!this.pointer.wasTouchScroll || this.touchScrollAllowed) {
+                this.isDragging = true;
+                this.mirrorNeedsRevert = false;
+                this.autoScroller.start(ev.pageX, ev.pageY, this.containerEl);
+                this.emitter.trigger('dragstart', ev);
+                if (this.touchScrollAllowed === false) this.pointer.cancelTouchScroll();
+            }
+        }
+    };
+    FeaturefulElementDragging1.prototype.tryStopDrag = function(ev) {
+        // .stop() is ALWAYS asynchronous, which we NEED because we want all pointerup events
+        // that come from the document to fire beforehand. much more convenient this way.
+        this.mirror.stop(this.mirrorNeedsRevert, this.stopDrag.bind(this, ev));
+    };
+    FeaturefulElementDragging1.prototype.stopDrag = function(ev) {
+        this.isDragging = false;
+        this.emitter.trigger('dragend', ev);
+    };
+    // fill in the implementations...
+    FeaturefulElementDragging1.prototype.setIgnoreMove = function(bool) {
+        this.pointer.shouldIgnoreMove = bool;
+    };
+    FeaturefulElementDragging1.prototype.setMirrorIsVisible = function(bool) {
+        this.mirror.setIsVisible(bool);
+    };
+    FeaturefulElementDragging1.prototype.setMirrorNeedsRevert = function(bool) {
+        this.mirrorNeedsRevert = bool;
+    };
+    FeaturefulElementDragging1.prototype.setAutoScrollEnabled = function(bool) {
+        this.autoScroller.isEnabled = bool;
+    };
+    return FeaturefulElementDragging1;
+}(_common.ElementDragging);
+/*
+When this class is instantiated, it records the offset of an element (relative to the document topleft),
+and continues to monitor scrolling, updating the cached coordinates if it needs to.
+Does not access the DOM after instantiation, so highly performant.
+
+Also keeps track of all scrolling/overflow:hidden containers that are parents of the given element
+and an determine if a given point is inside the combined clipping rectangle.
+*/ var OffsetTracker = /** @class */ function() {
+    function OffsetTracker1(el) {
+        this.origRect = _common.computeRect(el);
+        // will work fine for divs that have overflow:hidden
+        this.scrollCaches = _common.getClippingParents(el).map(function(scrollEl) {
+            return new ElementScrollGeomCache(scrollEl, true);
+        });
+    }
+    OffsetTracker1.prototype.destroy = function() {
+        for(var _i = 0, _a = this.scrollCaches; _i < _a.length; _i++){
+            var scrollCache = _a[_i];
+            scrollCache.destroy();
+        }
+    };
+    OffsetTracker1.prototype.computeLeft = function() {
+        var left = this.origRect.left;
+        for(var _i = 0, _a = this.scrollCaches; _i < _a.length; _i++){
+            var scrollCache = _a[_i];
+            left += scrollCache.origScrollLeft - scrollCache.getScrollLeft();
+        }
+        return left;
+    };
+    OffsetTracker1.prototype.computeTop = function() {
+        var top = this.origRect.top;
+        for(var _i = 0, _a = this.scrollCaches; _i < _a.length; _i++){
+            var scrollCache = _a[_i];
+            top += scrollCache.origScrollTop - scrollCache.getScrollTop();
+        }
+        return top;
+    };
+    OffsetTracker1.prototype.isWithinClipping = function(pageX, pageY) {
+        var point = {
+            left: pageX,
+            top: pageY
+        };
+        for(var _i = 0, _a = this.scrollCaches; _i < _a.length; _i++){
+            var scrollCache = _a[_i];
+            if (!isIgnoredClipping(scrollCache.getEventTarget()) && !_common.pointInsideRect(point, scrollCache.clientRect)) return false;
+        }
+        return true;
+    };
+    return OffsetTracker1;
+}();
+// certain clipping containers should never constrain interactions, like <html> and <body>
+// https://github.com/fullcalendar/fullcalendar/issues/3615
+function isIgnoredClipping(node) {
+    var tagName = node.tagName;
+    return tagName === 'HTML' || tagName === 'BODY';
+}
+/*
+Tracks movement over multiple droppable areas (aka "hits")
+that exist in one or more DateComponents.
+Relies on an existing draggable.
+
+emits:
+- pointerdown
+- dragstart
+- hitchange - fires initially, even if not over a hit
+- pointerup
+- (hitchange - again, to null, if ended over a hit)
+- dragend
+*/ var HitDragging = /** @class */ function() {
+    function HitDragging1(dragging1, droppableStore) {
+        var _this = this;
+        // options that can be set by caller
+        this.useSubjectCenter = false;
+        this.requireInitial = true; // if doesn't start out on a hit, won't emit any events
+        this.initialHit = null;
+        this.movingHit = null;
+        this.finalHit = null; // won't ever be populated if shouldIgnoreMove
+        this.handlePointerDown = function(ev) {
+            var dragging = _this.dragging;
+            _this.initialHit = null;
+            _this.movingHit = null;
+            _this.finalHit = null;
+            _this.prepareHits();
+            _this.processFirstCoord(ev);
+            if (_this.initialHit || !_this.requireInitial) {
+                dragging.setIgnoreMove(false);
+                // TODO: fire this before computing processFirstCoord, so listeners can cancel. this gets fired by almost every handler :(
+                _this.emitter.trigger('pointerdown', ev);
+            } else dragging.setIgnoreMove(true);
+        };
+        this.handleDragStart = function(ev) {
+            _this.emitter.trigger('dragstart', ev);
+            _this.handleMove(ev, true); // force = fire even if initially null
+        };
+        this.handleDragMove = function(ev) {
+            _this.emitter.trigger('dragmove', ev);
+            _this.handleMove(ev);
+        };
+        this.handlePointerUp = function(ev) {
+            _this.releaseHits();
+            _this.emitter.trigger('pointerup', ev);
+        };
+        this.handleDragEnd = function(ev) {
+            if (_this.movingHit) _this.emitter.trigger('hitupdate', null, true, ev);
+            _this.finalHit = _this.movingHit;
+            _this.movingHit = null;
+            _this.emitter.trigger('dragend', ev);
+        };
+        this.droppableStore = droppableStore;
+        dragging1.emitter.on('pointerdown', this.handlePointerDown);
+        dragging1.emitter.on('dragstart', this.handleDragStart);
+        dragging1.emitter.on('dragmove', this.handleDragMove);
+        dragging1.emitter.on('pointerup', this.handlePointerUp);
+        dragging1.emitter.on('dragend', this.handleDragEnd);
+        this.dragging = dragging1;
+        this.emitter = new _common.Emitter();
+    }
+    // sets initialHit
+    // sets coordAdjust
+    HitDragging1.prototype.processFirstCoord = function(ev) {
+        var origPoint = {
+            left: ev.pageX,
+            top: ev.pageY
+        };
+        var adjustedPoint = origPoint;
+        var subjectEl = ev.subjectEl;
+        var subjectRect;
+        if (subjectEl instanceof HTMLElement) {
+            subjectRect = _common.computeRect(subjectEl);
+            adjustedPoint = _common.constrainPoint(adjustedPoint, subjectRect);
+        }
+        var initialHit = this.initialHit = this.queryHitForOffset(adjustedPoint.left, adjustedPoint.top);
+        if (initialHit) {
+            if (this.useSubjectCenter && subjectRect) {
+                var slicedSubjectRect = _common.intersectRects(subjectRect, initialHit.rect);
+                if (slicedSubjectRect) adjustedPoint = _common.getRectCenter(slicedSubjectRect);
+            }
+            this.coordAdjust = _common.diffPoints(adjustedPoint, origPoint);
+        } else this.coordAdjust = {
+            left: 0,
+            top: 0
+        };
+    };
+    HitDragging1.prototype.handleMove = function(ev, forceHandle) {
+        var hit = this.queryHitForOffset(ev.pageX + this.coordAdjust.left, ev.pageY + this.coordAdjust.top);
+        if (forceHandle || !isHitsEqual(this.movingHit, hit)) {
+            this.movingHit = hit;
+            this.emitter.trigger('hitupdate', hit, false, ev);
+        }
+    };
+    HitDragging1.prototype.prepareHits = function() {
+        this.offsetTrackers = _common.mapHash(this.droppableStore, function(interactionSettings) {
+            interactionSettings.component.prepareHits();
+            return new OffsetTracker(interactionSettings.el);
+        });
+    };
+    HitDragging1.prototype.releaseHits = function() {
+        var offsetTrackers = this.offsetTrackers;
+        for(var id in offsetTrackers)offsetTrackers[id].destroy();
+        this.offsetTrackers = {};
+    };
+    HitDragging1.prototype.queryHitForOffset = function(offsetLeft, offsetTop) {
+        var _a = this, droppableStore = _a.droppableStore, offsetTrackers = _a.offsetTrackers;
+        var bestHit = null;
+        for(var id in droppableStore){
+            var component = droppableStore[id].component;
+            var offsetTracker = offsetTrackers[id];
+            if (offsetTracker && offsetTracker.isWithinClipping(offsetLeft, offsetTop)) {
+                var originLeft = offsetTracker.computeLeft();
+                var originTop = offsetTracker.computeTop();
+                var positionLeft = offsetLeft - originLeft;
+                var positionTop = offsetTop - originTop;
+                var origRect = offsetTracker.origRect;
+                var width = origRect.right - origRect.left;
+                var height = origRect.bottom - origRect.top;
+                if (// must be within the element's bounds
+                positionLeft >= 0 && positionLeft < width && positionTop >= 0 && positionTop < height) {
+                    var hit = component.queryHit(positionLeft, positionTop, width, height);
+                    if (hit && // make sure the hit is within activeRange, meaning it's not a dead cell
+                    _common.rangeContainsRange(hit.dateProfile.activeRange, hit.dateSpan.range) && (!bestHit || hit.layer > bestHit.layer)) {
+                        hit.componentId = id;
+                        hit.context = component.context;
+                        // TODO: better way to re-orient rectangle
+                        hit.rect.left += originLeft;
+                        hit.rect.right += originLeft;
+                        hit.rect.top += originTop;
+                        hit.rect.bottom += originTop;
+                        bestHit = hit;
+                    }
+                }
+            }
+        }
+        return bestHit;
+    };
+    return HitDragging1;
+}();
+function isHitsEqual(hit0, hit1) {
+    if (!hit0 && !hit1) return true;
+    if (Boolean(hit0) !== Boolean(hit1)) return false;
+    return _common.isDateSpansEqual(hit0.dateSpan, hit1.dateSpan);
+}
+function buildDatePointApiWithContext(dateSpan, context) {
+    var props = {};
+    for(var _i = 0, _a = context.pluginHooks.datePointTransforms; _i < _a.length; _i++){
+        var transform = _a[_i];
+        _tslib.__assign(props, transform(dateSpan, context));
+    }
+    _tslib.__assign(props, buildDatePointApi(dateSpan, context.dateEnv));
+    return props;
+}
+function buildDatePointApi(span, dateEnv) {
+    return {
+        date: dateEnv.toDate(span.range.start),
+        dateStr: dateEnv.formatIso(span.range.start, {
+            omitTime: span.allDay
+        }),
+        allDay: span.allDay
+    };
+}
+/*
+Monitors when the user clicks on a specific date/time of a component.
+A pointerdown+pointerup on the same "hit" constitutes a click.
+*/ var DateClicking = /** @class */ function(_super) {
+    _tslib.__extends(DateClicking1, _super);
+    function DateClicking1(settings) {
+        var _this = _super.call(this, settings) || this;
+        _this.handlePointerDown = function(pev) {
+            var dragging = _this.dragging;
+            var downEl = pev.origEvent.target;
+            // do this in pointerdown (not dragend) because DOM might be mutated by the time dragend is fired
+            dragging.setIgnoreMove(!_this.component.isValidDateDownEl(downEl));
+        };
+        // won't even fire if moving was ignored
+        _this.handleDragEnd = function(ev) {
+            var component = _this.component;
+            var pointer = _this.dragging.pointer;
+            if (!pointer.wasTouchScroll) {
+                var _a = _this.hitDragging, initialHit = _a.initialHit, finalHit = _a.finalHit;
+                if (initialHit && finalHit && isHitsEqual(initialHit, finalHit)) {
+                    var context = component.context;
+                    var arg = _tslib.__assign(_tslib.__assign({}, buildDatePointApiWithContext(initialHit.dateSpan, context)), {
+                        dayEl: initialHit.dayEl,
+                        jsEvent: ev.origEvent,
+                        view: context.viewApi || context.calendarApi.view
+                    });
+                    context.emitter.trigger('dateClick', arg);
+                }
+            }
+        };
+        // we DO want to watch pointer moves because otherwise finalHit won't get populated
+        _this.dragging = new FeaturefulElementDragging(settings.el);
+        _this.dragging.autoScroller.isEnabled = false;
+        var hitDragging = _this.hitDragging = new HitDragging(_this.dragging, _common.interactionSettingsToStore(settings));
+        hitDragging.emitter.on('pointerdown', _this.handlePointerDown);
+        hitDragging.emitter.on('dragend', _this.handleDragEnd);
+        return _this;
+    }
+    DateClicking1.prototype.destroy = function() {
+        this.dragging.destroy();
+    };
+    return DateClicking1;
+}(_common.Interaction);
+/*
+Tracks when the user selects a portion of time of a component,
+constituted by a drag over date cells, with a possible delay at the beginning of the drag.
+*/ var DateSelecting = /** @class */ function(_super) {
+    _tslib.__extends(DateSelecting1, _super);
+    function DateSelecting1(settings) {
+        var _this = _super.call(this, settings) || this;
+        _this.dragSelection = null;
+        _this.handlePointerDown = function(ev) {
+            var _a = _this, component = _a.component, dragging = _a.dragging;
+            var options = component.context.options;
+            var canSelect = options.selectable && component.isValidDateDownEl(ev.origEvent.target);
+            // don't bother to watch expensive moves if component won't do selection
+            dragging.setIgnoreMove(!canSelect);
+            // if touch, require user to hold down
+            dragging.delay = ev.isTouch ? getComponentTouchDelay$1(component) : null;
+        };
+        _this.handleDragStart = function(ev) {
+            _this.component.context.calendarApi.unselect(ev); // unselect previous selections
+        };
+        _this.handleHitUpdate = function(hit, isFinal) {
+            var context = _this.component.context;
+            var dragSelection = null;
+            var isInvalid = false;
+            if (hit) {
+                var initialHit = _this.hitDragging.initialHit;
+                var disallowed = hit.componentId === initialHit.componentId && _this.isHitComboAllowed && !_this.isHitComboAllowed(initialHit, hit);
+                if (!disallowed) dragSelection = joinHitsIntoSelection(initialHit, hit, context.pluginHooks.dateSelectionTransformers);
+                if (!dragSelection || !_common.isDateSelectionValid(dragSelection, hit.dateProfile, context)) {
+                    isInvalid = true;
+                    dragSelection = null;
+                }
+            }
+            if (dragSelection) context.dispatch({
+                type: 'SELECT_DATES',
+                selection: dragSelection
+            });
+            else if (!isFinal) context.dispatch({
+                type: 'UNSELECT_DATES'
+            });
+            if (!isInvalid) _common.enableCursor();
+            else _common.disableCursor();
+            if (!isFinal) _this.dragSelection = dragSelection; // only clear if moved away from all hits while dragging
+        };
+        _this.handlePointerUp = function(pev) {
+            if (_this.dragSelection) {
+                // selection is already rendered, so just need to report selection
+                _common.triggerDateSelect(_this.dragSelection, pev, _this.component.context);
+                _this.dragSelection = null;
+            }
+        };
+        var component1 = settings.component;
+        var options1 = component1.context.options;
+        var dragging2 = _this.dragging = new FeaturefulElementDragging(settings.el);
+        dragging2.touchScrollAllowed = false;
+        dragging2.minDistance = options1.selectMinDistance || 0;
+        dragging2.autoScroller.isEnabled = options1.dragScroll;
+        var hitDragging = _this.hitDragging = new HitDragging(_this.dragging, _common.interactionSettingsToStore(settings));
+        hitDragging.emitter.on('pointerdown', _this.handlePointerDown);
+        hitDragging.emitter.on('dragstart', _this.handleDragStart);
+        hitDragging.emitter.on('hitupdate', _this.handleHitUpdate);
+        hitDragging.emitter.on('pointerup', _this.handlePointerUp);
+        return _this;
+    }
+    DateSelecting1.prototype.destroy = function() {
+        this.dragging.destroy();
+    };
+    return DateSelecting1;
+}(_common.Interaction);
+function getComponentTouchDelay$1(component) {
+    var options = component.context.options;
+    var delay = options.selectLongPressDelay;
+    if (delay == null) delay = options.longPressDelay;
+    return delay;
+}
+function joinHitsIntoSelection(hit0, hit1, dateSelectionTransformers) {
+    var dateSpan0 = hit0.dateSpan;
+    var dateSpan1 = hit1.dateSpan;
+    var ms = [
+        dateSpan0.range.start,
+        dateSpan0.range.end,
+        dateSpan1.range.start,
+        dateSpan1.range.end, 
+    ];
+    ms.sort(_common.compareNumbers);
+    var props = {};
+    for(var _i = 0, dateSelectionTransformers_1 = dateSelectionTransformers; _i < dateSelectionTransformers_1.length; _i++){
+        var transformer = dateSelectionTransformers_1[_i];
+        var res = transformer(hit0, hit1);
+        if (res === false) return null;
+        if (res) _tslib.__assign(props, res);
+    }
+    props.range = {
+        start: ms[0],
+        end: ms[3]
+    };
+    props.allDay = dateSpan0.allDay;
+    return props;
+}
+var EventDragging = /** @class */ function(_super) {
+    _tslib.__extends(EventDragging1, _super);
+    function EventDragging1(settings) {
+        var _this = _super.call(this, settings) || this;
+        // internal state
+        _this.subjectEl = null;
+        _this.subjectSeg = null; // the seg being selected/dragged
+        _this.isDragging = false;
+        _this.eventRange = null;
+        _this.relevantEvents = null; // the events being dragged
+        _this.receivingContext = null;
+        _this.validMutation = null;
+        _this.mutatedRelevantEvents = null;
+        _this.handlePointerDown = function(ev) {
+            var origTarget = ev.origEvent.target;
+            var _a = _this, component = _a.component, dragging = _a.dragging;
+            var mirror = dragging.mirror;
+            var options = component.context.options;
+            var initialContext = component.context;
+            _this.subjectEl = ev.subjectEl;
+            var subjectSeg = _this.subjectSeg = _common.getElSeg(ev.subjectEl);
+            var eventRange = _this.eventRange = subjectSeg.eventRange;
+            var eventInstanceId = eventRange.instance.instanceId;
+            _this.relevantEvents = _common.getRelevantEvents(initialContext.getCurrentData().eventStore, eventInstanceId);
+            dragging.minDistance = ev.isTouch ? 0 : options.eventDragMinDistance;
+            dragging.delay = // only do a touch delay if touch and this event hasn't been selected yet
+            ev.isTouch && eventInstanceId !== component.props.eventSelection ? getComponentTouchDelay(component) : null;
+            if (options.fixedMirrorParent) mirror.parentNode = options.fixedMirrorParent;
+            else mirror.parentNode = _common.elementClosest(origTarget, '.fc');
+            mirror.revertDuration = options.dragRevertDuration;
+            var isValid = component.isValidSegDownEl(origTarget) && !_common.elementClosest(origTarget, '.fc-event-resizer'); // NOT on a resizer
+            dragging.setIgnoreMove(!isValid);
+            // disable dragging for elements that are resizable (ie, selectable)
+            // but are not draggable
+            _this.isDragging = isValid && ev.subjectEl.classList.contains('fc-event-draggable');
+        };
+        _this.handleDragStart = function(ev) {
+            var initialContext = _this.component.context;
+            var eventRange = _this.eventRange;
+            var eventInstanceId = eventRange.instance.instanceId;
+            if (ev.isTouch) // need to select a different event?
+            {
+                if (eventInstanceId !== _this.component.props.eventSelection) initialContext.dispatch({
+                    type: 'SELECT_EVENT',
+                    eventInstanceId: eventInstanceId
+                });
+            } else // if now using mouse, but was previous touch interaction, clear selected event
+            initialContext.dispatch({
+                type: 'UNSELECT_EVENT'
+            });
+            if (_this.isDragging) {
+                initialContext.calendarApi.unselect(ev); // unselect *date* selection
+                initialContext.emitter.trigger('eventDragStart', {
+                    el: _this.subjectEl,
+                    event: new _common.EventApi(initialContext, eventRange.def, eventRange.instance),
+                    jsEvent: ev.origEvent,
+                    view: initialContext.viewApi
+                });
+            }
+        };
+        _this.handleHitUpdate = function(hit, isFinal) {
+            if (!_this.isDragging) return;
+            var relevantEvents = _this.relevantEvents;
+            var initialHit = _this.hitDragging.initialHit;
+            var initialContext = _this.component.context;
+            // states based on new hit
+            var receivingContext = null;
+            var mutation = null;
+            var mutatedRelevantEvents = null;
+            var isInvalid = false;
+            var interaction = {
+                affectedEvents: relevantEvents,
+                mutatedEvents: _common.createEmptyEventStore(),
+                isEvent: true
+            };
+            if (hit) {
+                receivingContext = hit.context;
+                var receivingOptions = receivingContext.options;
+                if (initialContext === receivingContext || receivingOptions.editable && receivingOptions.droppable) {
+                    mutation = computeEventMutation(initialHit, hit, receivingContext.getCurrentData().pluginHooks.eventDragMutationMassagers);
+                    if (mutation) {
+                        mutatedRelevantEvents = _common.applyMutationToEventStore(relevantEvents, receivingContext.getCurrentData().eventUiBases, mutation, receivingContext);
+                        interaction.mutatedEvents = mutatedRelevantEvents;
+                        if (!_common.isInteractionValid(interaction, hit.dateProfile, receivingContext)) {
+                            isInvalid = true;
+                            mutation = null;
+                            mutatedRelevantEvents = null;
+                            interaction.mutatedEvents = _common.createEmptyEventStore();
+                        }
+                    }
+                } else receivingContext = null;
+            }
+            _this.displayDrag(receivingContext, interaction);
+            if (!isInvalid) _common.enableCursor();
+            else _common.disableCursor();
+            if (!isFinal) {
+                if (initialContext === receivingContext && isHitsEqual(initialHit, hit)) mutation = null;
+                _this.dragging.setMirrorNeedsRevert(!mutation);
+                // render the mirror if no already-rendered mirror
+                // TODO: wish we could somehow wait for dispatch to guarantee render
+                _this.dragging.setMirrorIsVisible(!hit || !_common.getElRoot(_this.subjectEl).querySelector('.fc-event-mirror'));
+                // assign states based on new hit
+                _this.receivingContext = receivingContext;
+                _this.validMutation = mutation;
+                _this.mutatedRelevantEvents = mutatedRelevantEvents;
+            }
+        };
+        _this.handlePointerUp = function() {
+            if (!_this.isDragging) _this.cleanup(); // because handleDragEnd won't fire
+        };
+        _this.handleDragEnd = function(ev) {
+            if (_this.isDragging) {
+                var initialContext_1 = _this.component.context;
+                var initialView = initialContext_1.viewApi;
+                var _a = _this, receivingContext_1 = _a.receivingContext, validMutation = _a.validMutation;
+                var eventDef = _this.eventRange.def;
+                var eventInstance = _this.eventRange.instance;
+                var eventApi = new _common.EventApi(initialContext_1, eventDef, eventInstance);
+                var relevantEvents_1 = _this.relevantEvents;
+                var mutatedRelevantEvents_1 = _this.mutatedRelevantEvents;
+                var finalHit = _this.hitDragging.finalHit;
+                _this.clearDrag(); // must happen after revert animation
+                initialContext_1.emitter.trigger('eventDragStop', {
+                    el: _this.subjectEl,
+                    event: eventApi,
+                    jsEvent: ev.origEvent,
+                    view: initialView
+                });
+                if (validMutation) {
+                    // dropped within same calendar
+                    if (receivingContext_1 === initialContext_1) {
+                        var updatedEventApi = new _common.EventApi(initialContext_1, mutatedRelevantEvents_1.defs[eventDef.defId], eventInstance ? mutatedRelevantEvents_1.instances[eventInstance.instanceId] : null);
+                        initialContext_1.dispatch({
+                            type: 'MERGE_EVENTS',
+                            eventStore: mutatedRelevantEvents_1
+                        });
+                        var eventChangeArg = {
+                            oldEvent: eventApi,
+                            event: updatedEventApi,
+                            relatedEvents: _common.buildEventApis(mutatedRelevantEvents_1, initialContext_1, eventInstance),
+                            revert: function() {
+                                initialContext_1.dispatch({
+                                    type: 'MERGE_EVENTS',
+                                    eventStore: relevantEvents_1
+                                });
+                            }
+                        };
+                        var transformed = {};
+                        for(var _i = 0, _b = initialContext_1.getCurrentData().pluginHooks.eventDropTransformers; _i < _b.length; _i++){
+                            var transformer = _b[_i];
+                            _tslib.__assign(transformed, transformer(validMutation, initialContext_1));
+                        }
+                        initialContext_1.emitter.trigger('eventDrop', _tslib.__assign(_tslib.__assign(_tslib.__assign({}, eventChangeArg), transformed), {
+                            el: ev.subjectEl,
+                            delta: validMutation.datesDelta,
+                            jsEvent: ev.origEvent,
+                            view: initialView
+                        }));
+                        initialContext_1.emitter.trigger('eventChange', eventChangeArg);
+                    // dropped in different calendar
+                    } else if (receivingContext_1) {
+                        var eventRemoveArg = {
+                            event: eventApi,
+                            relatedEvents: _common.buildEventApis(relevantEvents_1, initialContext_1, eventInstance),
+                            revert: function() {
+                                initialContext_1.dispatch({
+                                    type: 'MERGE_EVENTS',
+                                    eventStore: relevantEvents_1
+                                });
+                            }
+                        };
+                        initialContext_1.emitter.trigger('eventLeave', _tslib.__assign(_tslib.__assign({}, eventRemoveArg), {
+                            draggedEl: ev.subjectEl,
+                            view: initialView
+                        }));
+                        initialContext_1.dispatch({
+                            type: 'REMOVE_EVENTS',
+                            eventStore: relevantEvents_1
+                        });
+                        initialContext_1.emitter.trigger('eventRemove', eventRemoveArg);
+                        var addedEventDef = mutatedRelevantEvents_1.defs[eventDef.defId];
+                        var addedEventInstance = mutatedRelevantEvents_1.instances[eventInstance.instanceId];
+                        var addedEventApi = new _common.EventApi(receivingContext_1, addedEventDef, addedEventInstance);
+                        receivingContext_1.dispatch({
+                            type: 'MERGE_EVENTS',
+                            eventStore: mutatedRelevantEvents_1
+                        });
+                        var eventAddArg = {
+                            event: addedEventApi,
+                            relatedEvents: _common.buildEventApis(mutatedRelevantEvents_1, receivingContext_1, addedEventInstance),
+                            revert: function() {
+                                receivingContext_1.dispatch({
+                                    type: 'REMOVE_EVENTS',
+                                    eventStore: mutatedRelevantEvents_1
+                                });
+                            }
+                        };
+                        receivingContext_1.emitter.trigger('eventAdd', eventAddArg);
+                        if (ev.isTouch) receivingContext_1.dispatch({
+                            type: 'SELECT_EVENT',
+                            eventInstanceId: eventInstance.instanceId
+                        });
+                        receivingContext_1.emitter.trigger('drop', _tslib.__assign(_tslib.__assign({}, buildDatePointApiWithContext(finalHit.dateSpan, receivingContext_1)), {
+                            draggedEl: ev.subjectEl,
+                            jsEvent: ev.origEvent,
+                            view: finalHit.context.viewApi
+                        }));
+                        receivingContext_1.emitter.trigger('eventReceive', _tslib.__assign(_tslib.__assign({}, eventAddArg), {
+                            draggedEl: ev.subjectEl,
+                            view: finalHit.context.viewApi
+                        }));
+                    }
+                } else initialContext_1.emitter.trigger('_noEventDrop');
+            }
+            _this.cleanup();
+        };
+        var component2 = _this.component;
+        var options2 = component2.context.options;
+        var dragging3 = _this.dragging = new FeaturefulElementDragging(settings.el);
+        dragging3.pointer.selector = EventDragging1.SELECTOR;
+        dragging3.touchScrollAllowed = false;
+        dragging3.autoScroller.isEnabled = options2.dragScroll;
+        var hitDragging = _this.hitDragging = new HitDragging(_this.dragging, _common.interactionSettingsStore);
+        hitDragging.useSubjectCenter = settings.useEventCenter;
+        hitDragging.emitter.on('pointerdown', _this.handlePointerDown);
+        hitDragging.emitter.on('dragstart', _this.handleDragStart);
+        hitDragging.emitter.on('hitupdate', _this.handleHitUpdate);
+        hitDragging.emitter.on('pointerup', _this.handlePointerUp);
+        hitDragging.emitter.on('dragend', _this.handleDragEnd);
+        return _this;
+    }
+    EventDragging1.prototype.destroy = function() {
+        this.dragging.destroy();
+    };
+    // render a drag state on the next receivingCalendar
+    EventDragging1.prototype.displayDrag = function(nextContext, state) {
+        var initialContext = this.component.context;
+        var prevContext = this.receivingContext;
+        // does the previous calendar need to be cleared?
+        if (prevContext && prevContext !== nextContext) {
+            // does the initial calendar need to be cleared?
+            // if so, don't clear all the way. we still need to to hide the affectedEvents
+            if (prevContext === initialContext) prevContext.dispatch({
+                type: 'SET_EVENT_DRAG',
+                state: {
+                    affectedEvents: state.affectedEvents,
+                    mutatedEvents: _common.createEmptyEventStore(),
+                    isEvent: true
+                }
+            });
+            else prevContext.dispatch({
+                type: 'UNSET_EVENT_DRAG'
+            });
+        }
+        if (nextContext) nextContext.dispatch({
+            type: 'SET_EVENT_DRAG',
+            state: state
+        });
+    };
+    EventDragging1.prototype.clearDrag = function() {
+        var initialCalendar = this.component.context;
+        var receivingContext = this.receivingContext;
+        if (receivingContext) receivingContext.dispatch({
+            type: 'UNSET_EVENT_DRAG'
+        });
+        // the initial calendar might have an dummy drag state from displayDrag
+        if (initialCalendar !== receivingContext) initialCalendar.dispatch({
+            type: 'UNSET_EVENT_DRAG'
+        });
+    };
+    EventDragging1.prototype.cleanup = function() {
+        this.subjectSeg = null;
+        this.isDragging = false;
+        this.eventRange = null;
+        this.relevantEvents = null;
+        this.receivingContext = null;
+        this.validMutation = null;
+        this.mutatedRelevantEvents = null;
+    };
+    // TODO: test this in IE11
+    // QUESTION: why do we need it on the resizable???
+    EventDragging1.SELECTOR = '.fc-event-draggable, .fc-event-resizable';
+    return EventDragging1;
+}(_common.Interaction);
+function computeEventMutation(hit0, hit1, massagers) {
+    var dateSpan0 = hit0.dateSpan;
+    var dateSpan1 = hit1.dateSpan;
+    var date0 = dateSpan0.range.start;
+    var date1 = dateSpan1.range.start;
+    var standardProps = {};
+    if (dateSpan0.allDay !== dateSpan1.allDay) {
+        standardProps.allDay = dateSpan1.allDay;
+        standardProps.hasEnd = hit1.context.options.allDayMaintainDuration;
+        if (dateSpan1.allDay) // means date1 is already start-of-day,
+        // but date0 needs to be converted
+        date0 = _common.startOfDay(date0);
+    }
+    var delta = _common.diffDates(date0, date1, hit0.context.dateEnv, hit0.componentId === hit1.componentId ? hit0.largeUnit : null);
+    if (delta.milliseconds) standardProps.allDay = false;
+    var mutation = {
+        datesDelta: delta,
+        standardProps: standardProps
+    };
+    for(var _i = 0, massagers_1 = massagers; _i < massagers_1.length; _i++){
+        var massager = massagers_1[_i];
+        massager(mutation, hit0, hit1);
+    }
+    return mutation;
+}
+function getComponentTouchDelay(component) {
+    var options = component.context.options;
+    var delay = options.eventLongPressDelay;
+    if (delay == null) delay = options.longPressDelay;
+    return delay;
+}
+var EventResizing = /** @class */ function(_super) {
+    _tslib.__extends(EventResizing1, _super);
+    function EventResizing1(settings) {
+        var _this = _super.call(this, settings) || this;
+        // internal state
+        _this.draggingSegEl = null;
+        _this.draggingSeg = null; // TODO: rename to resizingSeg? subjectSeg?
+        _this.eventRange = null;
+        _this.relevantEvents = null;
+        _this.validMutation = null;
+        _this.mutatedRelevantEvents = null;
+        _this.handlePointerDown = function(ev) {
+            var component = _this.component;
+            var segEl = _this.querySegEl(ev);
+            var seg = _common.getElSeg(segEl);
+            var eventRange = _this.eventRange = seg.eventRange;
+            _this.dragging.minDistance = component.context.options.eventDragMinDistance;
+            // if touch, need to be working with a selected event
+            _this.dragging.setIgnoreMove(!_this.component.isValidSegDownEl(ev.origEvent.target) || ev.isTouch && _this.component.props.eventSelection !== eventRange.instance.instanceId);
+        };
+        _this.handleDragStart = function(ev) {
+            var context = _this.component.context;
+            var eventRange = _this.eventRange;
+            _this.relevantEvents = _common.getRelevantEvents(context.getCurrentData().eventStore, _this.eventRange.instance.instanceId);
+            var segEl = _this.querySegEl(ev);
+            _this.draggingSegEl = segEl;
+            _this.draggingSeg = _common.getElSeg(segEl);
+            context.calendarApi.unselect();
+            context.emitter.trigger('eventResizeStart', {
+                el: segEl,
+                event: new _common.EventApi(context, eventRange.def, eventRange.instance),
+                jsEvent: ev.origEvent,
+                view: context.viewApi
+            });
+        };
+        _this.handleHitUpdate = function(hit, isFinal, ev) {
+            var context = _this.component.context;
+            var relevantEvents = _this.relevantEvents;
+            var initialHit = _this.hitDragging.initialHit;
+            var eventInstance = _this.eventRange.instance;
+            var mutation = null;
+            var mutatedRelevantEvents = null;
+            var isInvalid = false;
+            var interaction = {
+                affectedEvents: relevantEvents,
+                mutatedEvents: _common.createEmptyEventStore(),
+                isEvent: true
+            };
+            if (hit) {
+                var disallowed = hit.componentId === initialHit.componentId && _this.isHitComboAllowed && !_this.isHitComboAllowed(initialHit, hit);
+                if (!disallowed) mutation = computeMutation(initialHit, hit, ev.subjectEl.classList.contains('fc-event-resizer-start'), eventInstance.range);
+            }
+            if (mutation) {
+                mutatedRelevantEvents = _common.applyMutationToEventStore(relevantEvents, context.getCurrentData().eventUiBases, mutation, context);
+                interaction.mutatedEvents = mutatedRelevantEvents;
+                if (!_common.isInteractionValid(interaction, hit.dateProfile, context)) {
+                    isInvalid = true;
+                    mutation = null;
+                    mutatedRelevantEvents = null;
+                    interaction.mutatedEvents = null;
+                }
+            }
+            if (mutatedRelevantEvents) context.dispatch({
+                type: 'SET_EVENT_RESIZE',
+                state: interaction
+            });
+            else context.dispatch({
+                type: 'UNSET_EVENT_RESIZE'
+            });
+            if (!isInvalid) _common.enableCursor();
+            else _common.disableCursor();
+            if (!isFinal) {
+                if (mutation && isHitsEqual(initialHit, hit)) mutation = null;
+                _this.validMutation = mutation;
+                _this.mutatedRelevantEvents = mutatedRelevantEvents;
+            }
+        };
+        _this.handleDragEnd = function(ev) {
+            var context = _this.component.context;
+            var eventDef = _this.eventRange.def;
+            var eventInstance = _this.eventRange.instance;
+            var eventApi = new _common.EventApi(context, eventDef, eventInstance);
+            var relevantEvents = _this.relevantEvents;
+            var mutatedRelevantEvents = _this.mutatedRelevantEvents;
+            context.emitter.trigger('eventResizeStop', {
+                el: _this.draggingSegEl,
+                event: eventApi,
+                jsEvent: ev.origEvent,
+                view: context.viewApi
+            });
+            if (_this.validMutation) {
+                var updatedEventApi = new _common.EventApi(context, mutatedRelevantEvents.defs[eventDef.defId], eventInstance ? mutatedRelevantEvents.instances[eventInstance.instanceId] : null);
+                context.dispatch({
+                    type: 'MERGE_EVENTS',
+                    eventStore: mutatedRelevantEvents
+                });
+                var eventChangeArg = {
+                    oldEvent: eventApi,
+                    event: updatedEventApi,
+                    relatedEvents: _common.buildEventApis(mutatedRelevantEvents, context, eventInstance),
+                    revert: function() {
+                        context.dispatch({
+                            type: 'MERGE_EVENTS',
+                            eventStore: relevantEvents
+                        });
+                    }
+                };
+                context.emitter.trigger('eventResize', _tslib.__assign(_tslib.__assign({}, eventChangeArg), {
+                    el: _this.draggingSegEl,
+                    startDelta: _this.validMutation.startDelta || _common.createDuration(0),
+                    endDelta: _this.validMutation.endDelta || _common.createDuration(0),
+                    jsEvent: ev.origEvent,
+                    view: context.viewApi
+                }));
+                context.emitter.trigger('eventChange', eventChangeArg);
+            } else context.emitter.trigger('_noEventResize');
+            // reset all internal state
+            _this.draggingSeg = null;
+            _this.relevantEvents = null;
+            _this.validMutation = null;
+        // okay to keep eventInstance around. useful to set it in handlePointerDown
+        };
+        var component3 = settings.component;
+        var dragging = _this.dragging = new FeaturefulElementDragging(settings.el);
+        dragging.pointer.selector = '.fc-event-resizer';
+        dragging.touchScrollAllowed = false;
+        dragging.autoScroller.isEnabled = component3.context.options.dragScroll;
+        var hitDragging = _this.hitDragging = new HitDragging(_this.dragging, _common.interactionSettingsToStore(settings));
+        hitDragging.emitter.on('pointerdown', _this.handlePointerDown);
+        hitDragging.emitter.on('dragstart', _this.handleDragStart);
+        hitDragging.emitter.on('hitupdate', _this.handleHitUpdate);
+        hitDragging.emitter.on('dragend', _this.handleDragEnd);
+        return _this;
+    }
+    EventResizing1.prototype.destroy = function() {
+        this.dragging.destroy();
+    };
+    EventResizing1.prototype.querySegEl = function(ev) {
+        return _common.elementClosest(ev.subjectEl, '.fc-event');
+    };
+    return EventResizing1;
+}(_common.Interaction);
+function computeMutation(hit0, hit1, isFromStart, instanceRange) {
+    var dateEnv = hit0.context.dateEnv;
+    var date0 = hit0.dateSpan.range.start;
+    var date1 = hit1.dateSpan.range.start;
+    var delta = _common.diffDates(date0, date1, dateEnv, hit0.largeUnit);
+    if (isFromStart) {
+        if (dateEnv.add(instanceRange.start, delta) < instanceRange.end) return {
+            startDelta: delta
+        };
+    } else if (dateEnv.add(instanceRange.end, delta) > instanceRange.start) return {
+        endDelta: delta
+    };
+    return null;
+}
+var UnselectAuto = /** @class */ function() {
+    function UnselectAuto1(context1) {
+        var _this = this;
+        this.context = context1;
+        this.isRecentPointerDateSelect = false; // wish we could use a selector to detect date selection, but uses hit system
+        this.matchesCancel = false;
+        this.matchesEvent = false;
+        this.onSelect = function(selectInfo) {
+            if (selectInfo.jsEvent) _this.isRecentPointerDateSelect = true;
+        };
+        this.onDocumentPointerDown = function(pev) {
+            var unselectCancel = _this.context.options.unselectCancel;
+            var downEl = _common.getEventTargetViaRoot(pev.origEvent);
+            _this.matchesCancel = !!_common.elementClosest(downEl, unselectCancel);
+            _this.matchesEvent = !!_common.elementClosest(downEl, EventDragging.SELECTOR); // interaction started on an event?
+        };
+        this.onDocumentPointerUp = function(pev) {
+            var context = _this.context;
+            var documentPointer = _this.documentPointer;
+            var calendarState = context.getCurrentData();
+            // touch-scrolling should never unfocus any type of selection
+            if (!documentPointer.wasTouchScroll) {
+                if (calendarState.dateSelection && !_this.isRecentPointerDateSelect // a new pointer-initiated date selection since last onDocumentPointerUp?
+                ) {
+                    var unselectAuto = context.options.unselectAuto;
+                    if (unselectAuto && (!unselectAuto || !_this.matchesCancel)) context.calendarApi.unselect(pev);
+                }
+                if (calendarState.eventSelection && !_this.matchesEvent // interaction DIDN'T start on an event
+                ) context.dispatch({
+                    type: 'UNSELECT_EVENT'
+                });
+            }
+            _this.isRecentPointerDateSelect = false;
+        };
+        var documentPointer1 = this.documentPointer = new PointerDragging(document);
+        documentPointer1.shouldIgnoreMove = true;
+        documentPointer1.shouldWatchScroll = false;
+        documentPointer1.emitter.on('pointerdown', this.onDocumentPointerDown);
+        documentPointer1.emitter.on('pointerup', this.onDocumentPointerUp);
+        /*
+        TODO: better way to know about whether there was a selection with the pointer
+        */ context1.emitter.on('select', this.onSelect);
+    }
+    UnselectAuto1.prototype.destroy = function() {
+        this.context.emitter.off('select', this.onSelect);
+        this.documentPointer.destroy();
+    };
+    return UnselectAuto1;
+}();
+var OPTION_REFINERS = {
+    fixedMirrorParent: _common.identity
+};
+var LISTENER_REFINERS = {
+    dateClick: _common.identity,
+    eventDragStart: _common.identity,
+    eventDragStop: _common.identity,
+    eventDrop: _common.identity,
+    eventResizeStart: _common.identity,
+    eventResizeStop: _common.identity,
+    eventResize: _common.identity,
+    drop: _common.identity,
+    eventReceive: _common.identity,
+    eventLeave: _common.identity
+};
+/*
+Given an already instantiated draggable object for one-or-more elements,
+Interprets any dragging as an attempt to drag an events that lives outside
+of a calendar onto a calendar.
+*/ var ExternalElementDragging = /** @class */ function() {
+    function ExternalElementDragging1(dragging4, suppliedDragMeta) {
+        var _this = this;
+        this.receivingContext = null;
+        this.droppableEvent = null; // will exist for all drags, even if create:false
+        this.suppliedDragMeta = null;
+        this.dragMeta = null;
+        this.handleDragStart = function(ev) {
+            _this.dragMeta = _this.buildDragMeta(ev.subjectEl);
+        };
+        this.handleHitUpdate = function(hit, isFinal, ev) {
+            var dragging = _this.hitDragging.dragging;
+            var receivingContext = null;
+            var droppableEvent = null;
+            var isInvalid = false;
+            var interaction = {
+                affectedEvents: _common.createEmptyEventStore(),
+                mutatedEvents: _common.createEmptyEventStore(),
+                isEvent: _this.dragMeta.create
+            };
+            if (hit) {
+                receivingContext = hit.context;
+                if (_this.canDropElOnCalendar(ev.subjectEl, receivingContext)) {
+                    droppableEvent = computeEventForDateSpan(hit.dateSpan, _this.dragMeta, receivingContext);
+                    interaction.mutatedEvents = _common.eventTupleToStore(droppableEvent);
+                    isInvalid = !_common.isInteractionValid(interaction, hit.dateProfile, receivingContext);
+                    if (isInvalid) {
+                        interaction.mutatedEvents = _common.createEmptyEventStore();
+                        droppableEvent = null;
+                    }
+                }
+            }
+            _this.displayDrag(receivingContext, interaction);
+            // show mirror if no already-rendered mirror element OR if we are shutting down the mirror (?)
+            // TODO: wish we could somehow wait for dispatch to guarantee render
+            dragging.setMirrorIsVisible(isFinal || !droppableEvent || !document.querySelector('.fc-event-mirror'));
+            if (!isInvalid) _common.enableCursor();
+            else _common.disableCursor();
+            if (!isFinal) {
+                dragging.setMirrorNeedsRevert(!droppableEvent);
+                _this.receivingContext = receivingContext;
+                _this.droppableEvent = droppableEvent;
+            }
+        };
+        this.handleDragEnd = function(pev) {
+            var _a = _this, receivingContext = _a.receivingContext, droppableEvent = _a.droppableEvent;
+            _this.clearDrag();
+            if (receivingContext && droppableEvent) {
+                var finalHit = _this.hitDragging.finalHit;
+                var finalView = finalHit.context.viewApi;
+                var dragMeta = _this.dragMeta;
+                receivingContext.emitter.trigger('drop', _tslib.__assign(_tslib.__assign({}, buildDatePointApiWithContext(finalHit.dateSpan, receivingContext)), {
+                    draggedEl: pev.subjectEl,
+                    jsEvent: pev.origEvent,
+                    view: finalView
+                }));
+                if (dragMeta.create) {
+                    var addingEvents_1 = _common.eventTupleToStore(droppableEvent);
+                    receivingContext.dispatch({
+                        type: 'MERGE_EVENTS',
+                        eventStore: addingEvents_1
+                    });
+                    if (pev.isTouch) receivingContext.dispatch({
+                        type: 'SELECT_EVENT',
+                        eventInstanceId: droppableEvent.instance.instanceId
+                    });
+                    // signal that an external event landed
+                    receivingContext.emitter.trigger('eventReceive', {
+                        event: new _common.EventApi(receivingContext, droppableEvent.def, droppableEvent.instance),
+                        relatedEvents: [],
+                        revert: function() {
+                            receivingContext.dispatch({
+                                type: 'REMOVE_EVENTS',
+                                eventStore: addingEvents_1
+                            });
+                        },
+                        draggedEl: pev.subjectEl,
+                        view: finalView
+                    });
+                }
+            }
+            _this.receivingContext = null;
+            _this.droppableEvent = null;
+        };
+        var hitDragging = this.hitDragging = new HitDragging(dragging4, _common.interactionSettingsStore);
+        hitDragging.requireInitial = false; // will start outside of a component
+        hitDragging.emitter.on('dragstart', this.handleDragStart);
+        hitDragging.emitter.on('hitupdate', this.handleHitUpdate);
+        hitDragging.emitter.on('dragend', this.handleDragEnd);
+        this.suppliedDragMeta = suppliedDragMeta;
+    }
+    ExternalElementDragging1.prototype.buildDragMeta = function(subjectEl) {
+        if (typeof this.suppliedDragMeta === 'object') return _common.parseDragMeta(this.suppliedDragMeta);
+        if (typeof this.suppliedDragMeta === 'function') return _common.parseDragMeta(this.suppliedDragMeta(subjectEl));
+        return getDragMetaFromEl(subjectEl);
+    };
+    ExternalElementDragging1.prototype.displayDrag = function(nextContext, state) {
+        var prevContext = this.receivingContext;
+        if (prevContext && prevContext !== nextContext) prevContext.dispatch({
+            type: 'UNSET_EVENT_DRAG'
+        });
+        if (nextContext) nextContext.dispatch({
+            type: 'SET_EVENT_DRAG',
+            state: state
+        });
+    };
+    ExternalElementDragging1.prototype.clearDrag = function() {
+        if (this.receivingContext) this.receivingContext.dispatch({
+            type: 'UNSET_EVENT_DRAG'
+        });
+    };
+    ExternalElementDragging1.prototype.canDropElOnCalendar = function(el, receivingContext) {
+        var dropAccept = receivingContext.options.dropAccept;
+        if (typeof dropAccept === 'function') return dropAccept.call(receivingContext.calendarApi, el);
+        if (typeof dropAccept === 'string' && dropAccept) return Boolean(_common.elementMatches(el, dropAccept));
+        return true;
+    };
+    return ExternalElementDragging1;
+}();
+// Utils for computing event store from the DragMeta
+// ----------------------------------------------------------------------------------------------------
+function computeEventForDateSpan(dateSpan, dragMeta, context) {
+    var defProps = _tslib.__assign({}, dragMeta.leftoverProps);
+    for(var _i = 0, _a = context.pluginHooks.externalDefTransforms; _i < _a.length; _i++){
+        var transform = _a[_i];
+        _tslib.__assign(defProps, transform(dateSpan, dragMeta));
+    }
+    var _b = _common.refineEventDef(defProps, context), refined = _b.refined, extra = _b.extra;
+    var def = _common.parseEventDef(refined, extra, dragMeta.sourceId, dateSpan.allDay, context.options.forceEventDuration || Boolean(dragMeta.duration), context);
+    var start = dateSpan.range.start;
+    // only rely on time info if drop zone is all-day,
+    // otherwise, we already know the time
+    if (dateSpan.allDay && dragMeta.startTime) start = context.dateEnv.add(start, dragMeta.startTime);
+    var end = dragMeta.duration ? context.dateEnv.add(start, dragMeta.duration) : _common.getDefaultEventEnd(dateSpan.allDay, start, context);
+    var instance = _common.createEventInstance(def.defId, {
+        start: start,
+        end: end
+    });
+    return {
+        def: def,
+        instance: instance
+    };
+}
+// Utils for extracting data from element
+// ----------------------------------------------------------------------------------------------------
+function getDragMetaFromEl(el) {
+    var str = getEmbeddedElData(el, 'event');
+    var obj = str ? JSON.parse(str) : {
+        create: false
+    }; // if no embedded data, assume no event creation
+    return _common.parseDragMeta(obj);
+}
+_common.config.dataAttrPrefix = '';
+function getEmbeddedElData(el, name) {
+    var prefix = _common.config.dataAttrPrefix;
+    var prefixedName = (prefix ? prefix + '-' : '') + name;
+    return el.getAttribute('data-' + prefixedName) || '';
+}
+/*
+Makes an element (that is *external* to any calendar) draggable.
+Can pass in data that determines how an event will be created when dropped onto a calendar.
+Leverages FullCalendar's internal drag-n-drop functionality WITHOUT a third-party drag system.
+*/ var ExternalDraggable = /** @class */ function() {
+    function ExternalDraggable1(el, settings) {
+        var _this = this;
+        if (settings === void 0) settings = {};
+        this.handlePointerDown = function(ev) {
+            var dragging = _this.dragging;
+            var _a = _this.settings, minDistance = _a.minDistance, longPressDelay = _a.longPressDelay;
+            dragging.minDistance = minDistance != null ? minDistance : ev.isTouch ? 0 : _common.BASE_OPTION_DEFAULTS.eventDragMinDistance;
+            dragging.delay = ev.isTouch ? longPressDelay != null ? longPressDelay : _common.BASE_OPTION_DEFAULTS.longPressDelay : 0;
+        };
+        this.handleDragStart = function(ev) {
+            if (ev.isTouch && _this.dragging.delay && ev.subjectEl.classList.contains('fc-event')) _this.dragging.mirror.getMirrorEl().classList.add('fc-event-selected');
+        };
+        this.settings = settings;
+        var dragging5 = this.dragging = new FeaturefulElementDragging(el);
+        dragging5.touchScrollAllowed = false;
+        if (settings.itemSelector != null) dragging5.pointer.selector = settings.itemSelector;
+        if (settings.appendTo != null) dragging5.mirror.parentNode = settings.appendTo; // TODO: write tests
+        dragging5.emitter.on('pointerdown', this.handlePointerDown);
+        dragging5.emitter.on('dragstart', this.handleDragStart);
+        new ExternalElementDragging(dragging5, settings.eventData); // eslint-disable-line no-new
+    }
+    ExternalDraggable1.prototype.destroy = function() {
+        this.dragging.destroy();
+    };
+    return ExternalDraggable1;
+}();
+/*
+Detects when a *THIRD-PARTY* drag-n-drop system interacts with elements.
+The third-party system is responsible for drawing the visuals effects of the drag.
+This class simply monitors for pointer movements and fires events.
+It also has the ability to hide the moving element (the "mirror") during the drag.
+*/ var InferredElementDragging = /** @class */ function(_super) {
+    _tslib.__extends(InferredElementDragging1, _super);
+    function InferredElementDragging1(containerEl) {
+        var _this = _super.call(this, containerEl) || this;
+        _this.shouldIgnoreMove = false;
+        _this.mirrorSelector = '';
+        _this.currentMirrorEl = null;
+        _this.handlePointerDown = function(ev) {
+            _this.emitter.trigger('pointerdown', ev);
+            if (!_this.shouldIgnoreMove) // fire dragstart right away. does not support delay or min-distance
+            _this.emitter.trigger('dragstart', ev);
+        };
+        _this.handlePointerMove = function(ev) {
+            if (!_this.shouldIgnoreMove) _this.emitter.trigger('dragmove', ev);
+        };
+        _this.handlePointerUp = function(ev) {
+            _this.emitter.trigger('pointerup', ev);
+            if (!_this.shouldIgnoreMove) // fire dragend right away. does not support a revert animation
+            _this.emitter.trigger('dragend', ev);
+        };
+        var pointer = _this.pointer = new PointerDragging(containerEl);
+        pointer.emitter.on('pointerdown', _this.handlePointerDown);
+        pointer.emitter.on('pointermove', _this.handlePointerMove);
+        pointer.emitter.on('pointerup', _this.handlePointerUp);
+        return _this;
+    }
+    InferredElementDragging1.prototype.destroy = function() {
+        this.pointer.destroy();
+    };
+    InferredElementDragging1.prototype.setIgnoreMove = function(bool) {
+        this.shouldIgnoreMove = bool;
+    };
+    InferredElementDragging1.prototype.setMirrorIsVisible = function(bool) {
+        if (bool) // restore a previously hidden element.
+        // use the reference in case the selector class has already been removed.
+        {
+            if (this.currentMirrorEl) {
+                this.currentMirrorEl.style.visibility = '';
+                this.currentMirrorEl = null;
+            }
+        } else {
+            var mirrorEl = this.mirrorSelector ? document.querySelector(this.mirrorSelector) : null;
+            if (mirrorEl) {
+                this.currentMirrorEl = mirrorEl;
+                mirrorEl.style.visibility = 'hidden';
+            }
+        }
+    };
+    return InferredElementDragging1;
+}(_common.ElementDragging);
+/*
+Bridges third-party drag-n-drop systems with FullCalendar.
+Must be instantiated and destroyed by caller.
+*/ var ThirdPartyDraggable = /** @class */ function() {
+    function ThirdPartyDraggable1(containerOrSettings, settings) {
+        var containerEl = document;
+        if (// wish we could just test instanceof EventTarget, but doesn't work in IE11
+        containerOrSettings === document || containerOrSettings instanceof Element) {
+            containerEl = containerOrSettings;
+            settings = settings || {};
+        } else settings = containerOrSettings || {};
+        var dragging = this.dragging = new InferredElementDragging(containerEl);
+        if (typeof settings.itemSelector === 'string') dragging.pointer.selector = settings.itemSelector;
+        else if (containerEl === document) dragging.pointer.selector = '[data-event]';
+        if (typeof settings.mirrorSelector === 'string') dragging.mirrorSelector = settings.mirrorSelector;
+        new ExternalElementDragging(dragging, settings.eventData); // eslint-disable-line no-new
+    }
+    ThirdPartyDraggable1.prototype.destroy = function() {
+        this.dragging.destroy();
+    };
+    return ThirdPartyDraggable1;
+}();
+var main = _common.createPlugin({
+    componentInteractions: [
+        DateClicking,
+        DateSelecting,
+        EventDragging,
+        EventResizing
+    ],
+    calendarInteractions: [
+        UnselectAuto
+    ],
+    elementDraggingImpl: FeaturefulElementDragging,
+    optionRefiners: OPTION_REFINERS,
+    listenerRefiners: LISTENER_REFINERS
+});
+exports.default = main;
+
+},{"@fullcalendar/common":"cnjgQ","tslib":"5i9Vz","@parcel/transformer-js/src/esmodule-helpers.js":"6jXwo"}]},["hGrKA","iGeph"], "iGeph", "parcelRequire15ff")
 
 //# sourceMappingURL=main.js.map

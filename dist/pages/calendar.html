@@ -403,6 +403,7 @@
     .calendar-fullcalendar {
         background: #fff;
         border-radius: 4px;
+        padding: 0 40px;
     }
     .calendar-fullcalendar .fc-header-toolbar {
         height: 75px;
@@ -470,6 +471,33 @@
         height: 0;
         width: 0;
     }
+    .calendar-fullcalendar>.fc-view-harness .fc-view>table thead tr th {
+        border: 0;
+    }
+    .calendar-fullcalendar>.fc-view-harness .fc-view>table thead tr th .fc-scrollgrid-sync-inner a {
+        display: inline-block;
+        font-weight: 400;
+        margin-bottom: 15px;
+    }
+    .calendar-fullcalendar>.fc-view-harness .fc-view>table thead tr th .fc-scrollgrid-sync-inner {
+        text-align: left;
+    }
+    .calendar-fullcalendar>.fc-view-harness .fc-view>table tbody .fc-scrollgrid-section-body>td {
+        border: 0;
+    }
+    .calendar-fullcalendar>.fc-view-harness .fc-view.fc-daygrid>table tbody .fc-scrollgrid-section-body>td .fc-daygrid-day-frame {
+        cursor: pointer;
+        min-height: 94px;
+        padding: 0 7px;
+    }
+    .calendar-fullcalendar>.fc-view-harness .fc-view.fc-daygrid>table tbody .fc-scrollgrid-section-body>td .fc-daygrid-day-frame .fc-daygrid-day-top {
+        text-align: right;
+    }
+    .calendar-fullcalendar>.fc-view-harness .fc-view.fc-daygrid>table tbody .fc-scrollgrid-section-body>td .fc-daygrid-day-frame .fc-event {
+        background: #9012fe;
+        border: 0;
+        padding: 2px 4px;
+    }
     .calendar-top {
         background: #fff;
         border-radius: 4px;
@@ -494,6 +522,9 @@
     }
     .calendar-top .calendar-filters .dropdown .btn {
         text-transform: uppercase;
+    }
+    .modal-add .modal-dialog, .modal-edit .modal-dialog {
+        margin-top: calc(50vh - 100px);
     }
 </style>
 
@@ -540,6 +571,29 @@
         </div>
     </div>
     <div id="calendar-fullcalendar" class="calendar-fullcalendar"></div>
+    <div class="modal fade modal-add" id="schedule-add">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div class="modal-add-block">
+                        <a href="/pages/create.html"><i class="bi bi-plus"></i></i>Post</a><br/>
+                        <a href="/pages/create.html"><i class="bi bi-plus"></i></i>Story</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade modal-edit" id="schedule-edit">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div class="modal-add-block">
+                        Edit this post
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
                 </main>

@@ -38,6 +38,7 @@ let datepicker = require('./datepicker');
 import { Calendar } from '@fullcalendar/core';
 import timegrid from '@fullcalendar/timegrid';
 import daygrid from '@fullcalendar/daygrid';
+import interaction from '@fullcalendar/interaction';
 import list from '@fullcalendar/list';
 const { Dropzone } = require("dropzone");
 Dropzone.autoDiscover = false;
@@ -274,7 +275,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (isCalendarPage) {
         const calendarEl = document.querySelector("#calendar-fullcalendar");
         let calendar = new Calendar(calendarEl, {
-            plugins: [timegrid, daygrid, list],
+            plugins: [timegrid, daygrid, list, interaction],
             headerToolbar: {
                 left: 'prev, title, next',
                 center: 'listWeek',
@@ -282,6 +283,15 @@ document.addEventListener('DOMContentLoaded', () => {
             },
             dayHeaderFormat: { weekday: 'short', day: 'numeric', omitCommas: true },
             initialView: 'dayGridMonth',
+            eventClick: function(event) {
+                $("#schedule-edit").modal('show');
+            },
+            dateClick: function(date, jsEvent, view) {
+                $('#schedule-add').modal('show');
+            },
+            selectable: true,
+            selectHelper: true,
+            editable: true,
             validRange: function(today) {
                 return {
                     start: today,
