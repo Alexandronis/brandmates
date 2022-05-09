@@ -35,6 +35,10 @@ module.exports = [
                     {
                         label: "Create",
                         path: "/pages/create.html"
+                    },
+                    {
+                        label: "Calendar",
+                        path: "/pages/calendar.html"
                     }
                 ]
             },

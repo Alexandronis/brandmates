@@ -142,10 +142,10 @@
       this[globalName] = mainExports;
     }
   }
-})({"l1vSb":[function(require,module,exports) {
+})({"85r0j":[function(require,module,exports) {
 "use strict";
 var HMR_HOST = null;
-var HMR_PORT = 50676;
+var HMR_PORT = 1234;
 var HMR_SECURE = false;
 var HMR_ENV_HASH = "62b4c8a1dd9cbcca";
 module.bundle.HMR_BUNDLE_ID = "f1a33f3a193ef3c0";
@@ -531,6 +531,10 @@ var _chartJs = require("chart.js");
 var _core = require("@fullcalendar/core");
 var _timegrid = require("@fullcalendar/timegrid");
 var _timegridDefault = parcelHelpers.interopDefault(_timegrid);
+var _daygrid = require("@fullcalendar/daygrid");
+var _daygridDefault = parcelHelpers.interopDefault(_daygrid);
+var _list = require("@fullcalendar/list");
+var _listDefault = parcelHelpers.interopDefault(_list);
 // Bootstrap JS
 var bootstrap = require('bootstrap');
 // Charts
@@ -548,180 +552,188 @@ Dropzone.options.previewa = {
     }
 };
 document.addEventListener('DOMContentLoaded', ()=>{
-    // Images dropzone
-    let myDropzone1 = new Dropzone("#dropzone-posts-1", {
-        url: '/url1.json'
-    });
-    let myDropzone2 = new Dropzone("#dropzone-posts-2", {
-        url: '/url2.json'
-    });
-    let myDropzone3 = new Dropzone("#dropzone-posts-3", {
-        url: '/url3.json'
-    });
-    let myDropzone4 = new Dropzone("#dropzone-posts-4", {
-        url: '/url4.json'
-    });
-    let myDropzone5 = new Dropzone("#dropzone-posts-5", {
-        url: '/url5.json'
-    });
-    let myDropzone6 = new Dropzone("#dropzone-posts-6", {
-        url: '/url6.json'
-    });
-    let myDropzoneS1 = new Dropzone("#dropzone-stories-1", {
-        url: '/url1.json'
-    });
-    let myDropzoneS2 = new Dropzone("#dropzone-stories-2", {
-        url: '/url2.json'
-    });
-    myDropzone1.on("addedfile", (file)=>{
-        console.log(`File added: ${file.name}`);
-    });
-    // chart.js
-    _chartJs.Chart.register(_chartJs.ArcElement, _chartJs.LineElement, _chartJs.BarElement, _chartJs.PointElement, _chartJs.BarController, _chartJs.BubbleController, _chartJs.DoughnutController, _chartJs.LineController, _chartJs.PieController, _chartJs.PolarAreaController, _chartJs.RadarController, _chartJs.ScatterController, _chartJs.CategoryScale, _chartJs.LinearScale, _chartJs.LogarithmicScale, _chartJs.RadialLinearScale, _chartJs.TimeScale, _chartJs.TimeSeriesScale, _chartJs.Decimation, _chartJs.Filler, _chartJs.Legend, _chartJs.Title, _chartJs.Tooltip);
-    const ctx = document.getElementById('dateChart').getContext('2d');
-    const ctxStory = document.getElementById('dateChartStory').getContext('2d');
-    const myChart = new _chartJs.Chart(ctx, {
-        type: 'bar',
-        data: {
-            labels: [
-                '0',
-                '3',
-                '6',
-                '9',
-                '12',
-                '15',
-                '18',
-                '21'
-            ],
-            datasets: [
-                {
-                    label: 'Best hours to post',
-                    data: [
-                        0,
-                        3,
-                        7,
-                        10,
-                        10,
-                        7,
-                        3,
-                        0
-                    ],
-                    backgroundColor: [
-                        '#71A3F3',
-                        '#71A3F3',
-                        '#71A3F3',
-                        '#71A3F3',
-                        '#E3954A',
-                        '#71A3F3',
-                        '#71A3F3',
-                        '#71A3F3', 
-                    ]
-                }
-            ]
-        },
-        options: {
-            scales: {
-                y: {
-                    beginAtZero: true,
-                    grid: {
-                        display: false,
-                        drawBorder: false
-                    },
-                    ticks: {
-                        display: false
+    const isCalendarPage = window.location.pathname.includes('/pages/calendar');
+    const isCreatePage = window.location.pathname.includes('/pages/create');
+    if (isCreatePage) {
+        // Images dropzone
+        let myDropzone1 = new Dropzone("#dropzone-posts-1", {
+            url: '/url1.json'
+        });
+        let myDropzone2 = new Dropzone("#dropzone-posts-2", {
+            url: '/url2.json'
+        });
+        let myDropzone3 = new Dropzone("#dropzone-posts-3", {
+            url: '/url3.json'
+        });
+        let myDropzone4 = new Dropzone("#dropzone-posts-4", {
+            url: '/url4.json'
+        });
+        let myDropzone5 = new Dropzone("#dropzone-posts-5", {
+            url: '/url5.json'
+        });
+        let myDropzone6 = new Dropzone("#dropzone-posts-6", {
+            url: '/url6.json'
+        });
+        let myDropzoneS1 = new Dropzone("#dropzone-stories-1", {
+            url: '/url1.json'
+        });
+        let myDropzoneS2 = new Dropzone("#dropzone-stories-2", {
+            url: '/url2.json'
+        });
+        myDropzone1.on("addedfile", (file)=>{
+            console.log(`File added: ${file.name}`);
+        });
+    }
+    if (isCreatePage) {
+        // chart.js
+        _chartJs.Chart.register(_chartJs.ArcElement, _chartJs.LineElement, _chartJs.BarElement, _chartJs.PointElement, _chartJs.BarController, _chartJs.BubbleController, _chartJs.DoughnutController, _chartJs.LineController, _chartJs.PieController, _chartJs.PolarAreaController, _chartJs.RadarController, _chartJs.ScatterController, _chartJs.CategoryScale, _chartJs.LinearScale, _chartJs.LogarithmicScale, _chartJs.RadialLinearScale, _chartJs.TimeScale, _chartJs.TimeSeriesScale, _chartJs.Decimation, _chartJs.Filler, _chartJs.Legend, _chartJs.Title, _chartJs.Tooltip);
+        const ctx = document.getElementById('dateChart').getContext('2d');
+        const ctxStory = document.getElementById('dateChartStory').getContext('2d');
+        const myChart = new _chartJs.Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: [
+                    '0',
+                    '3',
+                    '6',
+                    '9',
+                    '12',
+                    '15',
+                    '18',
+                    '21'
+                ],
+                datasets: [
+                    {
+                        label: 'Best hours to post',
+                        data: [
+                            0,
+                            3,
+                            7,
+                            10,
+                            10,
+                            7,
+                            3,
+                            0
+                        ],
+                        backgroundColor: [
+                            '#71A3F3',
+                            '#71A3F3',
+                            '#71A3F3',
+                            '#71A3F3',
+                            '#E3954A',
+                            '#71A3F3',
+                            '#71A3F3',
+                            '#71A3F3', 
+                        ]
                     }
-                },
-                x: {
-                    grid: {
-                        display: false
+                ]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        grid: {
+                            display: false,
+                            drawBorder: false
+                        },
+                        ticks: {
+                            display: false
+                        }
+                    },
+                    x: {
+                        grid: {
+                            display: false
+                        }
                     }
                 }
             }
-        }
-    });
-    const myChartStory = new _chartJs.Chart(ctxStory, {
-        type: 'bar',
-        data: {
-            labels: [
-                '0',
-                '3',
-                '6',
-                '9',
-                '12',
-                '15',
-                '18',
-                '21'
-            ],
-            datasets: [
-                {
-                    label: 'Best hours to post',
-                    data: [
-                        0,
-                        3,
-                        7,
-                        10,
-                        10,
-                        7,
-                        3,
-                        0
-                    ],
-                    backgroundColor: [
-                        '#71A3F3',
-                        '#71A3F3',
-                        '#71A3F3',
-                        '#71A3F3',
-                        '#E3954A',
-                        '#71A3F3',
-                        '#71A3F3',
-                        '#71A3F3', 
-                    ]
-                }
-            ]
-        },
-        options: {
-            scales: {
-                y: {
-                    beginAtZero: true,
-                    grid: {
-                        display: false,
-                        drawBorder: false
-                    },
-                    ticks: {
-                        display: false
+        });
+        const myChartStory = new _chartJs.Chart(ctxStory, {
+            type: 'bar',
+            data: {
+                labels: [
+                    '0',
+                    '3',
+                    '6',
+                    '9',
+                    '12',
+                    '15',
+                    '18',
+                    '21'
+                ],
+                datasets: [
+                    {
+                        label: 'Best hours to post',
+                        data: [
+                            0,
+                            3,
+                            7,
+                            10,
+                            10,
+                            7,
+                            3,
+                            0
+                        ],
+                        backgroundColor: [
+                            '#71A3F3',
+                            '#71A3F3',
+                            '#71A3F3',
+                            '#71A3F3',
+                            '#E3954A',
+                            '#71A3F3',
+                            '#71A3F3',
+                            '#71A3F3', 
+                        ]
                     }
-                },
-                x: {
-                    grid: {
-                        display: false
+                ]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        grid: {
+                            display: false,
+                            drawBorder: false
+                        },
+                        ticks: {
+                            display: false
+                        }
+                    },
+                    x: {
+                        grid: {
+                            display: false
+                        }
                     }
                 }
             }
-        }
-    });
-    // Fullcalendar
-    const calendarEl = document.querySelector("#create-fullcalendar");
-    let calendar = new _core.Calendar(calendarEl, {
-        plugins: [
-            _timegridDefault.default
-        ],
-        headerToolbar: {
-            // left: 'prev, next today',
-            left: 'prev, next'
-        },
-        dayHeaderFormat: {
-            weekday: 'short',
-            day: 'numeric',
-            omitCommas: true
-        },
-        initialView: 'timeGridWeek',
-        validRange: function(today) {
-            return {
-                start: today
-            };
-        },
-        events: 'https://fullcalendar.io/demo-events.json'
-    });
-    calendar.render();
+        });
+    }
+    if (isCreatePage) {
+        // Fullcalendar Create
+        const calendarEl = document.querySelector("#create-fullcalendar");
+        let calendar = new _core.Calendar(calendarEl, {
+            plugins: [
+                _timegridDefault.default
+            ],
+            headerToolbar: {
+                // left: 'prev, next today',
+                left: 'prev, next'
+            },
+            dayHeaderFormat: {
+                weekday: 'short',
+                day: 'numeric',
+                omitCommas: true
+            },
+            initialView: 'timeGridWeek',
+            validRange: function(today) {
+                return {
+                    start: today
+                };
+            },
+            events: 'https://fullcalendar.io/demo-events.json'
+        });
+        calendar.render();
+    }
     // Radio functionality
     var checkedRadio = $('input[name = "flexRadioDefault"]');
     checkedRadio.click(function() {
@@ -768,6 +780,38 @@ document.addEventListener('DOMContentLoaded', ()=>{
             if (instagramModalImg) instagramModalImg.attr('src', currentImage[0].src);
         }
     });
+    // Calendar page
+    $('.all-filter').click(function() {
+        $(this).toggleClass('active');
+    });
+    if (isCalendarPage) {
+        const calendarEl = document.querySelector("#calendar-fullcalendar");
+        let calendar = new _core.Calendar(calendarEl, {
+            plugins: [
+                _timegridDefault.default,
+                _daygridDefault.default,
+                _listDefault.default
+            ],
+            headerToolbar: {
+                left: 'prev, title, next',
+                center: 'listWeek',
+                right: 'dayGridMonth, timeGridWeek, today'
+            },
+            dayHeaderFormat: {
+                weekday: 'short',
+                day: 'numeric',
+                omitCommas: true
+            },
+            initialView: 'dayGridMonth',
+            validRange: function(today) {
+                return {
+                    start: today
+                };
+            },
+            events: 'https://fullcalendar.io/demo-events.json'
+        });
+        calendar.render();
+    }
     // Line chart
     const lineChartEl = document.querySelector("#chart-line");
     if (lineChartEl) new apexLineChart().init(lineChartEl);
@@ -792,7 +836,7 @@ document.addEventListener('DOMContentLoaded', ()=>{
     if (datepickerEl) new datepicker().init('.datepicker');
 });
 
-},{"bootstrap":"4VxGl","./apex-charts/line":"ixfcR","./apex-charts/bar":"eBeiv","./apex-charts/users":"6kPXv","./apex-charts/spark":"beBa7","./datepicker":"dvEkG","@fullcalendar/core":"5UuDO","@fullcalendar/timegrid":"lpFmL","@parcel/transformer-js/src/esmodule-helpers.js":"6jXwo","chart.js":"7J4yz","dropzone":"koWJM"}],"4VxGl":[function(require,module,exports) {
+},{"bootstrap":"4VxGl","./apex-charts/line":"ixfcR","./apex-charts/bar":"eBeiv","./apex-charts/users":"6kPXv","./apex-charts/spark":"beBa7","./datepicker":"dvEkG","@fullcalendar/core":"5UuDO","@fullcalendar/timegrid":"lpFmL","@parcel/transformer-js/src/esmodule-helpers.js":"6jXwo","chart.js":"7J4yz","dropzone":"koWJM","@fullcalendar/list":"fYCNr","@fullcalendar/daygrid":"1Spto"}],"4VxGl":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "Alert", ()=>Alert
@@ -60454,6 +60498,452 @@ function styleChanged(style, prevStyle) {
     /******/ }();
 });
 
-},{}]},["l1vSb","iGeph"], "iGeph", "parcelRequire15ff")
+},{}],"fYCNr":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "ListView", ()=>ListView
+);
+/*!
+FullCalendar v5.10.2
+Docs & License: https://fullcalendar.io/
+(c) 2021 Adam Shaw
+*/ var _mainCss = require("./main.css");
+var _common = require("@fullcalendar/common");
+var _tslib = require("tslib");
+var ListViewHeaderRow = /** @class */ function(_super) {
+    _tslib.__extends(ListViewHeaderRow1, _super);
+    function ListViewHeaderRow1() {
+        var _this = _super !== null && _super.apply(this, arguments) || this;
+        _this.state = {
+            textId: _common.getUniqueDomId()
+        };
+        return _this;
+    }
+    ListViewHeaderRow1.prototype.render = function() {
+        var _a = this.context, theme = _a.theme, dateEnv = _a.dateEnv, options = _a.options, viewApi = _a.viewApi;
+        var _b = this.props, cellId = _b.cellId, dayDate = _b.dayDate, todayRange = _b.todayRange;
+        var textId = this.state.textId;
+        var dayMeta = _common.getDateMeta(dayDate, todayRange);
+        // will ever be falsy?
+        var text = options.listDayFormat ? dateEnv.format(dayDate, options.listDayFormat) : '';
+        // will ever be falsy? also, BAD NAME "alt"
+        var sideText = options.listDaySideFormat ? dateEnv.format(dayDate, options.listDaySideFormat) : '';
+        var hookProps = _tslib.__assign({
+            date: dateEnv.toDate(dayDate),
+            view: viewApi,
+            textId: textId,
+            text: text,
+            sideText: sideText,
+            navLinkAttrs: _common.buildNavLinkAttrs(this.context, dayDate),
+            sideNavLinkAttrs: _common.buildNavLinkAttrs(this.context, dayDate, 'day', false)
+        }, dayMeta);
+        var classNames = [
+            'fc-list-day'
+        ].concat(_common.getDayClassNames(dayMeta, theme));
+        // TODO: make a reusable HOC for dayHeader (used in daygrid/timegrid too)
+        return _common.createElement(_common.RenderHook, {
+            hookProps: hookProps,
+            classNames: options.dayHeaderClassNames,
+            content: options.dayHeaderContent,
+            defaultContent: renderInnerContent,
+            didMount: options.dayHeaderDidMount,
+            willUnmount: options.dayHeaderWillUnmount
+        }, function(rootElRef, customClassNames, innerElRef, innerContent) {
+            return _common.createElement("tr", {
+                ref: rootElRef,
+                className: classNames.concat(customClassNames).join(' '),
+                "data-date": _common.formatDayString(dayDate)
+            }, _common.createElement("th", {
+                scope: "colgroup",
+                colSpan: 3,
+                id: cellId,
+                "aria-labelledby": textId
+            }, _common.createElement("div", {
+                className: 'fc-list-day-cushion ' + theme.getClass('tableCellShaded'),
+                ref: innerElRef
+            }, innerContent)));
+        });
+    };
+    return ListViewHeaderRow1;
+}(_common.BaseComponent);
+function renderInnerContent(props) {
+    return _common.createElement(_common.Fragment, null, props.text && _common.createElement("a", _tslib.__assign({
+        id: props.textId,
+        className: "fc-list-day-text"
+    }, props.navLinkAttrs), props.text), props.sideText && /* not keyboard tabbable */ _common.createElement("a", _tslib.__assign({
+        "aria-hidden": true,
+        className: "fc-list-day-side-text"
+    }, props.sideNavLinkAttrs), props.sideText));
+}
+var DEFAULT_TIME_FORMAT = _common.createFormatter({
+    hour: 'numeric',
+    minute: '2-digit',
+    meridiem: 'short'
+});
+var ListViewEventRow = /** @class */ function(_super) {
+    _tslib.__extends(ListViewEventRow1, _super);
+    function ListViewEventRow1() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    ListViewEventRow1.prototype.render = function() {
+        var _a = this, props = _a.props, context = _a.context;
+        var seg = props.seg, timeHeaderId = props.timeHeaderId, eventHeaderId = props.eventHeaderId, dateHeaderId = props.dateHeaderId;
+        var timeFormat = context.options.eventTimeFormat || DEFAULT_TIME_FORMAT;
+        return _common.createElement(_common.EventRoot, {
+            seg: seg,
+            timeText: "" // BAD. because of all-day content
+            ,
+            disableDragging: true,
+            disableResizing: true,
+            defaultContent: function() {
+                return renderEventInnerContent(seg, context);
+            } /* weird */ ,
+            isPast: props.isPast,
+            isFuture: props.isFuture,
+            isToday: props.isToday,
+            isSelected: props.isSelected,
+            isDragging: props.isDragging,
+            isResizing: props.isResizing,
+            isDateSelecting: props.isDateSelecting
+        }, function(rootElRef, classNames, innerElRef, innerContent, hookProps) {
+            return _common.createElement("tr", {
+                className: [
+                    'fc-list-event',
+                    hookProps.event.url ? 'fc-event-forced-url' : ''
+                ].concat(classNames).join(' '),
+                ref: rootElRef
+            }, buildTimeContent(seg, timeFormat, context, timeHeaderId, dateHeaderId), _common.createElement("td", {
+                "aria-hidden": true,
+                className: "fc-list-event-graphic"
+            }, _common.createElement("span", {
+                className: "fc-list-event-dot",
+                style: {
+                    borderColor: hookProps.borderColor || hookProps.backgroundColor
+                }
+            })), _common.createElement("td", {
+                ref: innerElRef,
+                headers: eventHeaderId + " " + dateHeaderId,
+                className: "fc-list-event-title"
+            }, innerContent));
+        });
+    };
+    return ListViewEventRow1;
+}(_common.BaseComponent);
+function renderEventInnerContent(seg, context) {
+    var interactiveAttrs = _common.getSegAnchorAttrs(seg, context);
+    return _common.createElement("a", _tslib.__assign({}, interactiveAttrs), seg.eventRange.def.title);
+}
+function buildTimeContent(seg, timeFormat, context, timeHeaderId, dateHeaderId) {
+    var options = context.options;
+    if (options.displayEventTime !== false) {
+        var eventDef = seg.eventRange.def;
+        var eventInstance = seg.eventRange.instance;
+        var doAllDay = false;
+        var timeText = void 0;
+        if (eventDef.allDay) doAllDay = true;
+        else if (_common.isMultiDayRange(seg.eventRange.range)) {
+            if (seg.isStart) timeText = _common.buildSegTimeText(seg, timeFormat, context, null, null, eventInstance.range.start, seg.end);
+            else if (seg.isEnd) timeText = _common.buildSegTimeText(seg, timeFormat, context, null, null, seg.start, eventInstance.range.end);
+            else doAllDay = true;
+        } else timeText = _common.buildSegTimeText(seg, timeFormat, context);
+        if (doAllDay) {
+            var hookProps = {
+                text: context.options.allDayText,
+                view: context.viewApi
+            };
+            return _common.createElement(_common.RenderHook, {
+                hookProps: hookProps,
+                classNames: options.allDayClassNames,
+                content: options.allDayContent,
+                defaultContent: renderAllDayInner,
+                didMount: options.allDayDidMount,
+                willUnmount: options.allDayWillUnmount
+            }, function(rootElRef, classNames, innerElRef, innerContent) {
+                return _common.createElement("td", {
+                    ref: rootElRef,
+                    headers: timeHeaderId + " " + dateHeaderId,
+                    className: [
+                        'fc-list-event-time'
+                    ].concat(classNames).join(' ')
+                }, innerContent);
+            });
+        }
+        return _common.createElement("td", {
+            className: "fc-list-event-time"
+        }, timeText);
+    }
+    return null;
+}
+function renderAllDayInner(hookProps) {
+    return hookProps.text;
+}
+/*
+Responsible for the scroller, and forwarding event-related actions into the "grid".
+*/ var ListView = /** @class */ function(_super) {
+    _tslib.__extends(ListView1, _super);
+    function ListView1() {
+        var _this = _super !== null && _super.apply(this, arguments) || this;
+        _this.computeDateVars = _common.memoize(computeDateVars);
+        _this.eventStoreToSegs = _common.memoize(_this._eventStoreToSegs);
+        _this.state = {
+            timeHeaderId: _common.getUniqueDomId(),
+            eventHeaderId: _common.getUniqueDomId(),
+            dateHeaderIdRoot: _common.getUniqueDomId()
+        };
+        _this.setRootEl = function(rootEl) {
+            if (rootEl) _this.context.registerInteractiveComponent(_this, {
+                el: rootEl
+            });
+            else _this.context.unregisterInteractiveComponent(_this);
+        };
+        return _this;
+    }
+    ListView1.prototype.render = function() {
+        var _this = this;
+        var _a = this, props = _a.props, context = _a.context;
+        var extraClassNames = [
+            'fc-list',
+            context.theme.getClass('table'),
+            context.options.stickyHeaderDates !== false ? 'fc-list-sticky' : '', 
+        ];
+        var _b = this.computeDateVars(props.dateProfile), dayDates = _b.dayDates, dayRanges = _b.dayRanges;
+        var eventSegs = this.eventStoreToSegs(props.eventStore, props.eventUiBases, dayRanges);
+        return _common.createElement(_common.ViewRoot, {
+            viewSpec: context.viewSpec,
+            elRef: this.setRootEl
+        }, function(rootElRef, classNames) {
+            return _common.createElement("div", {
+                ref: rootElRef,
+                className: extraClassNames.concat(classNames).join(' ')
+            }, _common.createElement(_common.Scroller, {
+                liquid: !props.isHeightAuto,
+                overflowX: props.isHeightAuto ? 'visible' : 'hidden',
+                overflowY: props.isHeightAuto ? 'visible' : 'auto'
+            }, eventSegs.length > 0 ? _this.renderSegList(eventSegs, dayDates) : _this.renderEmptyMessage()));
+        });
+    };
+    ListView1.prototype.renderEmptyMessage = function() {
+        var _a = this.context, options = _a.options, viewApi = _a.viewApi;
+        var hookProps = {
+            text: options.noEventsText,
+            view: viewApi
+        };
+        return _common.createElement(_common.RenderHook, {
+            hookProps: hookProps,
+            classNames: options.noEventsClassNames,
+            content: options.noEventsContent,
+            defaultContent: renderNoEventsInner,
+            didMount: options.noEventsDidMount,
+            willUnmount: options.noEventsWillUnmount
+        }, function(rootElRef, classNames, innerElRef, innerContent) {
+            return _common.createElement("div", {
+                className: [
+                    'fc-list-empty'
+                ].concat(classNames).join(' '),
+                ref: rootElRef
+            }, _common.createElement("div", {
+                className: "fc-list-empty-cushion",
+                ref: innerElRef
+            }, innerContent));
+        });
+    };
+    ListView1.prototype.renderSegList = function(allSegs, dayDates) {
+        var _a = this.context, theme = _a.theme, options = _a.options;
+        var _b = this.state, timeHeaderId = _b.timeHeaderId, eventHeaderId = _b.eventHeaderId, dateHeaderIdRoot = _b.dateHeaderIdRoot;
+        var segsByDay = groupSegsByDay(allSegs); // sparse array
+        return _common.createElement(_common.NowTimer, {
+            unit: "day"
+        }, function(nowDate, todayRange) {
+            var innerNodes = [];
+            for(var dayIndex = 0; dayIndex < segsByDay.length; dayIndex += 1){
+                var daySegs = segsByDay[dayIndex];
+                if (daySegs) {
+                    var dayStr = _common.formatDayString(dayDates[dayIndex]);
+                    var dateHeaderId = dateHeaderIdRoot + '-' + dayStr;
+                    // append a day header
+                    innerNodes.push(_common.createElement(ListViewHeaderRow, {
+                        key: dayStr,
+                        cellId: dateHeaderId,
+                        dayDate: dayDates[dayIndex],
+                        todayRange: todayRange
+                    }));
+                    daySegs = _common.sortEventSegs(daySegs, options.eventOrder);
+                    for(var _i = 0, daySegs_1 = daySegs; _i < daySegs_1.length; _i++){
+                        var seg = daySegs_1[_i];
+                        innerNodes.push(_common.createElement(ListViewEventRow, _tslib.__assign({
+                            key: dayStr + ':' + seg.eventRange.instance.instanceId /* are multiple segs for an instanceId */ ,
+                            seg: seg,
+                            isDragging: false,
+                            isResizing: false,
+                            isDateSelecting: false,
+                            isSelected: false,
+                            timeHeaderId: timeHeaderId,
+                            eventHeaderId: eventHeaderId,
+                            dateHeaderId: dateHeaderId
+                        }, _common.getSegMeta(seg, todayRange, nowDate))));
+                    }
+                }
+            }
+            return _common.createElement("table", {
+                className: 'fc-list-table ' + theme.getClass('table')
+            }, _common.createElement("thead", null, _common.createElement("tr", null, _common.createElement("th", {
+                scope: "col",
+                id: timeHeaderId
+            }, options.timeHint), _common.createElement("th", {
+                scope: "col",
+                "aria-hidden": true
+            }), _common.createElement("th", {
+                scope: "col",
+                id: eventHeaderId
+            }, options.eventHint))), _common.createElement("tbody", null, innerNodes));
+        });
+    };
+    ListView1.prototype._eventStoreToSegs = function(eventStore, eventUiBases, dayRanges) {
+        return this.eventRangesToSegs(_common.sliceEventStore(eventStore, eventUiBases, this.props.dateProfile.activeRange, this.context.options.nextDayThreshold).fg, dayRanges);
+    };
+    ListView1.prototype.eventRangesToSegs = function(eventRanges, dayRanges) {
+        var segs = [];
+        for(var _i = 0, eventRanges_1 = eventRanges; _i < eventRanges_1.length; _i++){
+            var eventRange = eventRanges_1[_i];
+            segs.push.apply(segs, this.eventRangeToSegs(eventRange, dayRanges));
+        }
+        return segs;
+    };
+    ListView1.prototype.eventRangeToSegs = function(eventRange, dayRanges) {
+        var dateEnv = this.context.dateEnv;
+        var nextDayThreshold = this.context.options.nextDayThreshold;
+        var range = eventRange.range;
+        var allDay = eventRange.def.allDay;
+        var dayIndex;
+        var segRange;
+        var seg;
+        var segs = [];
+        for(dayIndex = 0; dayIndex < dayRanges.length; dayIndex += 1){
+            segRange = _common.intersectRanges(range, dayRanges[dayIndex]);
+            if (segRange) {
+                seg = {
+                    component: this,
+                    eventRange: eventRange,
+                    start: segRange.start,
+                    end: segRange.end,
+                    isStart: eventRange.isStart && segRange.start.valueOf() === range.start.valueOf(),
+                    isEnd: eventRange.isEnd && segRange.end.valueOf() === range.end.valueOf(),
+                    dayIndex: dayIndex
+                };
+                segs.push(seg);
+                // detect when range won't go fully into the next day,
+                // and mutate the latest seg to the be the end.
+                if (!seg.isEnd && !allDay && dayIndex + 1 < dayRanges.length && range.end < dateEnv.add(dayRanges[dayIndex + 1].start, nextDayThreshold)) {
+                    seg.end = range.end;
+                    seg.isEnd = true;
+                    break;
+                }
+            }
+        }
+        return segs;
+    };
+    return ListView1;
+}(_common.DateComponent);
+function renderNoEventsInner(hookProps) {
+    return hookProps.text;
+}
+function computeDateVars(dateProfile) {
+    var dayStart = _common.startOfDay(dateProfile.renderRange.start);
+    var viewEnd = dateProfile.renderRange.end;
+    var dayDates = [];
+    var dayRanges = [];
+    while(dayStart < viewEnd){
+        dayDates.push(dayStart);
+        dayRanges.push({
+            start: dayStart,
+            end: _common.addDays(dayStart, 1)
+        });
+        dayStart = _common.addDays(dayStart, 1);
+    }
+    return {
+        dayDates: dayDates,
+        dayRanges: dayRanges
+    };
+}
+// Returns a sparse array of arrays, segs grouped by their dayIndex
+function groupSegsByDay(segs) {
+    var segsByDay = []; // sparse array
+    var i;
+    var seg;
+    for(i = 0; i < segs.length; i += 1){
+        seg = segs[i];
+        (segsByDay[seg.dayIndex] || (segsByDay[seg.dayIndex] = [])).push(seg);
+    }
+    return segsByDay;
+}
+var OPTION_REFINERS = {
+    listDayFormat: createFalsableFormatter,
+    listDaySideFormat: createFalsableFormatter,
+    noEventsClassNames: _common.identity,
+    noEventsContent: _common.identity,
+    noEventsDidMount: _common.identity,
+    noEventsWillUnmount: _common.identity
+};
+function createFalsableFormatter(input) {
+    return input === false ? null : _common.createFormatter(input);
+}
+var main = _common.createPlugin({
+    optionRefiners: OPTION_REFINERS,
+    views: {
+        list: {
+            component: ListView,
+            buttonTextKey: 'list',
+            listDayFormat: {
+                month: 'long',
+                day: 'numeric',
+                year: 'numeric'
+            }
+        },
+        listDay: {
+            type: 'list',
+            duration: {
+                days: 1
+            },
+            listDayFormat: {
+                weekday: 'long'
+            }
+        },
+        listWeek: {
+            type: 'list',
+            duration: {
+                weeks: 1
+            },
+            listDayFormat: {
+                weekday: 'long'
+            },
+            listDaySideFormat: {
+                month: 'long',
+                day: 'numeric',
+                year: 'numeric'
+            }
+        },
+        listMonth: {
+            type: 'list',
+            duration: {
+                month: 1
+            },
+            listDaySideFormat: {
+                weekday: 'long'
+            }
+        },
+        listYear: {
+            type: 'list',
+            duration: {
+                year: 1
+            },
+            listDaySideFormat: {
+                weekday: 'long'
+            }
+        }
+    }
+});
+exports.default = main;
+
+},{"./main.css":"fPMPN","@fullcalendar/common":"cnjgQ","tslib":"5i9Vz","@parcel/transformer-js/src/esmodule-helpers.js":"6jXwo"}],"fPMPN":[function() {},{}]},["85r0j","iGeph"], "iGeph", "parcelRequire15ff")
 
 //# sourceMappingURL=main.js.map

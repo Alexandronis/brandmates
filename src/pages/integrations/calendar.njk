@@ -1,0 +1,150 @@
+---
+layout: base
+headerButtons: false
+navbar: false
+title: Calendar
+permalink: 'pages/calendar.html'
+---
+
+<style type="text/css">
+    .calendar-fullcalendar {
+        background: #fff;
+        border-radius: 4px;
+    }
+    .calendar-fullcalendar .fc-header-toolbar {
+        height: 75px;
+        padding-top: 30px;
+    }
+    .calendar-fullcalendar .fc-header-toolbar .fc-toolbar-chunk:first-child>div {
+        margin: 0;
+    }
+    .calendar-fullcalendar .fc-header-toolbar .fc-toolbar-chunk:first-child .fc-toolbar-title {
+        font-size: 25px;
+        margin-top: -2px;
+    }
+    .calendar-fullcalendar .fc-header-toolbar .fc-toolbar-chunk:first-child button.fc-button {
+        display: none;
+    }
+    .calendar-fullcalendar .fc-header-toolbar .fc-toolbar-chunk:first-child button.fc-prev-button,
+    .calendar-fullcalendar .fc-header-toolbar .fc-toolbar-chunk:first-child button.fc-next-button {
+        display: block;
+    }
+    .calendar-fullcalendar .fc-header-toolbar .fc-toolbar-chunk:first-child button.fc-prev-button {
+        margin-right: 20px;
+    }
+    .calendar-fullcalendar .fc-header-toolbar .fc-toolbar-chunk:first-child button.fc-next-button {
+        margin-left: 20px;
+    }
+    .calendar-fullcalendar .fc-header-toolbar .fc-toolbar-chunk:last-child {
+        position: absolute;
+        right: 65px;
+        top: 21px;
+    }
+    .calendar-fullcalendar .fc-header-toolbar .fc-toolbar-chunk .fc-button {
+        background: transparent;
+        color: #000;
+        font-weight: 500;
+        text-transform: capitalize;
+    }
+    .calendar-fullcalendar .fc-header-toolbar .fc-toolbar-chunk .fc-button.fc-button-active {
+        color: #9012fe;
+    }
+    .calendar-fullcalendar .fc-header-toolbar .fc-toolbar-chunk:last-child .fc-button {
+        border-bottom: 3px solid transparent;
+    }
+    .calendar-fullcalendar .fc-header-toolbar .fc-toolbar-chunk:last-child .fc-button.fc-button-active {
+        border-bottom: 3px solid #9012fe;
+    }
+    .calendar-fullcalendar .fc-header-toolbar .fc-toolbar-chunk:nth-child(2) {
+        position: absolute;
+        right: 65px;
+    }
+    .calendar-fullcalendar .fc-header-toolbar button.fc-next-button:before {
+        border-bottom: 8px solid transparent;
+        border-left: 10px solid #9012fe;
+        border-top: 8px solid transparent;
+        content: '';
+        display: inline-block;
+        height: 0;
+        width: 0;
+    }
+    .calendar-fullcalendar .fc-header-toolbar button.fc-prev-button:before {
+        border-bottom: 8px solid transparent;
+        border-right: 10px solid #9012fe;
+        border-top: 8px solid transparent;
+        content: '';
+        display: inline-block;
+        height: 0;
+        width: 0;
+    }
+    .calendar-top {
+        background: #fff;
+        border-radius: 4px;
+        margin-bottom: 10px;
+        padding: 14px 42px;
+    }
+    .calendar-top .calendar-filters .all-filter {
+        background-color: transparent;
+        box-shadow: none;
+        color: #525F7F;
+        cursor: pointer;
+        display: inline-block;
+        font-weight: 700;
+        margin-right: 10px;
+        text-transform: uppercase;
+    }
+    .calendar-top .calendar-filters .all-filter.active {
+        color: #9012fe;
+    }
+    .calendar-top .calendar-filters .dropdown:first-of-type {
+        margin-right: 5px;
+    }
+    .calendar-top .calendar-filters .dropdown .btn {
+        text-transform: uppercase;
+    }
+</style>
+
+<div class="container position-relative">
+    <div class="calendar-top">
+        <div class="container">
+            <div class="row">
+                <div class="col-6">
+                    <div class="calendar-filters">
+                        <a class="all-filter active">All</a>
+                        <div class="dropdown">
+                            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton12" data-bs-toggle="dropdown" aria-expanded="false">
+                                Events
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton12">
+                                <li><a class="dropdown-item" href="#">Email Campaign</a></li>
+                                <li><a class="dropdown-item" href="#">Blog post</a></li>
+                                <li><a class="dropdown-item" href="#">Content Shoot</a></li>
+                                <li><a class="dropdown-item" href="#">Collaboration</a></li>
+                                <li><a class="dropdown-item" href="#">Monthly Reporting Due</a></li>
+                                <li><a class="dropdown-item" href="#">Launch Date</a></li>
+                            </ul>
+                        </div>
+                        <div class="dropdown">
+                            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton12" data-bs-toggle="dropdown" aria-expanded="false">
+                                Posts
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton12">
+                                <li><a class="dropdown-item" href="#">Instagram Posts</a></li>
+                                <li><a class="dropdown-item" href="#">Instagram Stories</a></li>
+                                <li><a class="dropdown-item" href="#">Instagram Reels</a></li>
+                                <li><a class="dropdown-item" href="#">Pinterest</a></li>
+                                <li><a class="dropdown-item" href="#">Twitter</a></li>
+                                <li><a class="dropdown-item" href="#">Youtube</a></li>
+                                <li><a class="dropdown-item" href="#">Plann Promtps</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="calendar-type-switcher"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="calendar-fullcalendar" class="calendar-fullcalendar"></div>
+</div>
