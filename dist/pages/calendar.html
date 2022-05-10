@@ -454,6 +454,23 @@
         position: absolute;
         right: 65px;
     }
+    .calendar-fullcalendar .fc-header-toolbar .fc-toolbar-chunk:nth-child(2) button:before {
+        background: url(/svg/create/list-view.svg) no-repeat;
+        background-size: cover;
+        content: '';
+        display: inline-block;
+        height: 30px;
+        left: 0;
+        position: absolute;
+        top: 0;
+        width: 37px;
+    }
+
+    .calendar-fullcalendar .fc-header-toolbar .fc-toolbar-chunk:nth-child(2) button {
+        padding: 0 35px 0 0;
+        position: relative;
+        text-indent: -9999px;
+    }
     .calendar-fullcalendar .fc-header-toolbar button.fc-next-button:before {
         border-bottom: 8px solid transparent;
         border-left: 10px solid #9012fe;
@@ -545,6 +562,9 @@
     .calendar-fullcalendar>.fc-view-harness .fc-list .fc-list-table tbody .fc-list-event:hover td {
         background: transparent;
     }
+    .calendar-fullcalendar>.fc-view-harness .fc-list-event-dot {
+        border-color: #fff;
+    }
     /* Calendar top bar */
     .calendar-top {
         background: #fff;
@@ -573,6 +593,28 @@
     }
     .modal-add .modal-dialog, .modal-edit .modal-dialog {
         margin-top: calc(50vh - 100px);
+    }
+    /* Calendar bottom */
+    .calendar-bottom {
+        background: #fff;
+        padding: 0 40px 20px;
+    }
+    .calendar-bottom .instagram-label {
+        color: #000;
+        font-weight: 500;
+        margin-bottom: 7px;
+    }
+    .calendar-bottom .instagram-label:after {
+        background: #9012fe;
+        content: '';
+        display: inline-block;
+        height: 10px;
+        margin-left: 5px;
+        vertical-align: middle;
+        width: 10px;
+    }
+    .calendar-bottom .instagram-text {
+        font-size: 14px;
     }
 </style>
 
@@ -619,6 +661,10 @@
         </div>
     </div>
     <div id="calendar-fullcalendar" class="calendar-fullcalendar"></div>
+    <div class="calendar-bottom">
+        <div class="instagram-label">Instagram:</div>
+        <div class="instagram-text">Connect a Facebook Business page or Instagram Business to view your analytics and comments.</div>
+    </div>
     <div class="modal fade modal-add" id="schedule-add">
         <div class="modal-dialog">
             <div class="modal-content">
