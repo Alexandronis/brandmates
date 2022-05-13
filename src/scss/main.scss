@@ -16,5 +16,9 @@
 @import "libs/apexcharts";
 @import "libs/flatpickr";
 
+@import "@fullcalendar/core/main.min.css";
+@import "@fullcalendar/daygrid/main.min.css";
+@import "@fullcalendar/timegrid/main.min.css";
+
 // Custom styles
 @import "custom";
